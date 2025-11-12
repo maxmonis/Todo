@@ -1,12 +1,9 @@
 import mongoose from "mongoose"
 
 interface TodoDoc {
+  checked?: boolean
   text: string
-  userId: {
-    ref: "User"
-    required: true
-    type: mongoose.Schema.Types.ObjectId
-  }
+  userId: mongoose.Schema.Types.ObjectId
 }
 
 interface UserDoc {
@@ -14,6 +11,7 @@ interface UserDoc {
 }
 
 let todoSchema = new mongoose.Schema<TodoDoc>({
+  checked: { type: Boolean },
   text: { required: true, type: String },
   userId: { ref: "User", required: true, type: mongoose.Schema.Types.ObjectId },
 })

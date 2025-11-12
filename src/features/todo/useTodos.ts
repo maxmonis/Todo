@@ -15,7 +15,7 @@ let getTodos = createServerFn()
   .middleware([authMiddleware])
   .handler(async ({ context: { userId } }) => {
     let todos = await db.Todo.find({ userId }).lean()
-    return todos.map(({ _id, text }) => {
-      return { id: _id.toString(), text }
+    return todos.map(({ _id, checked = false, text }) => {
+      return { checked, id: _id.toString(), text }
     })
   })

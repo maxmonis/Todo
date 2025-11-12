@@ -1,11 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router"
 import { useState } from "react"
+import { Checkbox } from "~/components/ui/Checkbox"
 import { LoadingSpinner } from "~/components/ui/LoadingSpinner"
 import { AuthButton } from "~/features/auth/AuthButton"
 import { useAuth } from "~/features/auth/authContext"
 import { useAddTodo } from "~/features/todo/useAddTodo"
 import { useDeleteTodo } from "~/features/todo/useDeleteTodo"
 import { useTodos } from "~/features/todo/useTodos"
+import { useToggleTodo } from "~/features/todo/useToggleTodo"
+import { cn } from "~/lib/dom"
 
 export let Route = createFileRoute("/")({ component: HomePage })
 
@@ -41,23 +44,31 @@ function HomePage() {
 
 function TodoList() {
   let { data: todos } = useTodos()
-  let { mutate: removeTodo } = useDeleteTodo()
+  let { mutate: deleteTodo } = useDeleteTodo()
+  let { mutate: toggleTodo } = useToggleTodo()
 
   return (
     <ul className="mb-4 space-y-2">
-      {todos.map(({ id, text }) => (
+      {todos.map(({ checked, id, text }) => (
         <li
           className="flex justify-between gap-5 rounded-lg border border-white/20 bg-white/10 p-3 shadow-md backdrop-blur-sm"
           key={id}
         >
-          <span className="text-lg text-white">{text}</span>
+          <Checkbox
+            checked={checked}
+            className={cn(checked && "line-through")}
+            label={text}
+            onChange={() => {
+              toggleTodo({ data: id })
+            }}
+          />
           <button
             className="text-red-500"
             onClick={() => {
-              removeTodo({ data: id })
+              deleteTodo({ data: id })
             }}
           >
-            Remove
+            Delete
           </button>
         </li>
       ))}
