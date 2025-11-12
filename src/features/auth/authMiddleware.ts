@@ -1,20 +1,20 @@
 import { createMiddleware } from "@tanstack/react-start"
 import { isValidObjectId } from "mongoose"
-import { decrypt } from "~/server/jose"
+import { useAuthSession } from "./useAuthSession"
 
-export let authMiddleware = createMiddleware({ type: "function" })
-  .client(({ next }) => {
-    let token = localStorage.getItem("token")
-    if (!token) throw "Not authorized"
-    return next({ sendContext: { token } })
-  })
-  .server(async ({ context: { token }, next }) => {
-    try {
-      let { userId } = await decrypt(token)
-      if (typeof userId != "string" || !isValidObjectId(userId))
-        throw "Not authorized"
-      return next({ sendContext: { userId } })
-    } catch (error) {
+export let authMiddleware = createMiddleware({ type: "function" }).server(
+  async ({ next }) => {
+    let {
+      data: { email, userId },
+    } = await useAuthSession()
+
+    if (
+      typeof email != "string" ||
+      typeof userId != "string" ||
+      !isValidObjectId(userId)
+    )
       throw "Not authorized"
-    }
-  })
+
+    return next({ context: { email, userId } })
+  },
+)

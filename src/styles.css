@@ -1,14 +1,34 @@
 @import "tailwindcss";
 
-body {
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
-    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@theme {
+  --animate-spinner: 1.25s linear spinner infinite;
+
+  @keyframes spinner {
+    0% {
+      stroke-dashoffset: 502;
+      stroke-dasharray: 150.6 100.4;
+    }
+    50% {
+      stroke-dasharray: 1 250;
+    }
+    100% {
+      stroke-dashoffset: 0;
+      stroke-dasharray: 150.6 100.4;
+    }
+  }
 }
 
-code {
-  font-family:
-    source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+@layer base {
+  body {
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+      "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  button {
+    @apply cursor-pointer;
+  }
 }

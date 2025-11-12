@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { createServerFn } from "@tanstack/react-start"
 import { db } from "~/server/mongoose"
+import { authMiddleware } from "../auth/authMiddleware"
 
 export function useTodos() {
   return useQuery({
@@ -10,9 +11,11 @@ export function useTodos() {
   })
 }
 
-let getTodos = createServerFn().handler(async () => {
-  let todos = await db.Todo.find().lean()
-  return todos.map(({ _id, text }) => {
-    return { id: _id.toString(), text }
+let getTodos = createServerFn()
+  .middleware([authMiddleware])
+  .handler(async ({ context: { userId } }) => {
+    let todos = await db.Todo.find({ userId }).lean()
+    return todos.map(({ _id, text }) => {
+      return { id: _id.toString(), text }
+    })
   })
-})
