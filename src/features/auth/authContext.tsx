@@ -1,8 +1,6 @@
-import { createServerFn } from "@tanstack/react-start"
-import { isValidObjectId } from "mongoose"
 import { createContext, useContext, useEffect, useState } from "react"
-import { db } from "~/server/mongoose"
-import { useAuthSession } from "./useAuthSession"
+import { clearSession } from "./clearSession"
+import { loadUser } from "./loadUser"
 
 interface AuthContext {
   loading: boolean
@@ -10,7 +8,7 @@ interface AuthContext {
   user: { email: string } | null
 }
 
-let Context = createContext<AuthContext | undefined>(undefined)
+let Context = createContext<AuthContext | null>(null)
 
 export function AuthProvider({ children }: React.PropsWithChildren) {
   let [loading, setLoading] = useState(true)
@@ -47,27 +45,3 @@ export function useAuth() {
   if (!context) throw new Error("useAuth must be used within AuthProvider")
   return context
 }
-
-let clearSession = createServerFn({ method: "POST" }).handler(async () => {
-  let session = await useAuthSession()
-  await session.clear()
-  return "Logout successful"
-})
-
-let loadUser = createServerFn({ method: "GET" }).handler(async () => {
-  let session = await useAuthSession()
-  let { userId } = session.data
-
-  if (!userId) return null
-  if (!isValidObjectId(userId)) {
-    await session.clear()
-    return null
-  }
-
-  let doc = await db.User.findById(userId)
-  if (!doc) return null
-
-  let { email } = doc
-  await session.update({ email, userId })
-  return { email }
-})

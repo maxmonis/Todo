@@ -1,14 +1,16 @@
-import { cn } from "~/lib/dom"
+import { cn } from "~/lib/utils"
+
+interface LoadingSpinnerProps {
+  className?: string
+  hideLoadingText?: boolean
+  size?: "sm" | "lg"
+}
 
 export function LoadingSpinner({
   className,
   hideLoadingText,
   size = "lg",
-}: {
-  className?: string
-  hideLoadingText?: boolean
-  size?: "sm" | "lg"
-}) {
+}: LoadingSpinnerProps) {
   return (
     <div
       aria-live="polite"

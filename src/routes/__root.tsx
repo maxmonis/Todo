@@ -22,7 +22,7 @@ export let Route = createRootRouteWithContext<{
   },
   notFoundComponent() {
     return (
-      <div className="text-white">
+      <div>
         <h1 className="mb-3 text-2xl">404: Not Found</h1>
         <Link className="underline" replace to="/">
           Return Home
@@ -37,7 +37,7 @@ export let Route = createRootRouteWithContext<{
           <HeadContent />
         </head>
         <body
-          className="min-h-screen bg-linear-to-br from-purple-900 via-purple-800 to-black p-5"
+          className="min-h-screen bg-linear-to-br from-purple-950 via-purple-900 to-black p-5 text-white"
           style={{
             backgroundImage:
               "radial-gradient(50% 50% at 80% 20%, #3B021F 0%, #7B1028 60%, #1A000A 100%)",

@@ -6,9 +6,7 @@ export let Route = createFileRoute("/api/auth/google/callback")({
   server: {
     handlers: {
       async GET({ request }) {
-        let url = new URL(request.url)
-        let code = url.searchParams.get("code")
-
+        let code = new URL(request.url).searchParams.get("code")
         if (!code) throw redirect({ href: process.env.VITE_BASE_URL })
 
         let tokenRes = await fetch("https://oauth2.googleapis.com/token", {
@@ -34,7 +32,7 @@ export let Route = createFileRoute("/api/auth/google/callback")({
           { headers: { Authorization: `Bearer ${tokenData.access_token}` } },
         )
         let { email } = await userRes.json()
-        if (!email || typeof email != "string")
+        if (typeof email != "string")
           throw new Error("No email returned from Google")
 
         let user = await db.User.findOne({ email })

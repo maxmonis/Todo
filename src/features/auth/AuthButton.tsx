@@ -7,7 +7,7 @@ export function AuthButton() {
 
   if (user)
     return (
-      <div className="my-5">
+      <div>
         <p className="text-sm">Logged in as {user.email}</p>
         <button
           className="mt-1 text-red-500"

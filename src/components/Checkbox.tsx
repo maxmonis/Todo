@@ -1,4 +1,4 @@
-import { cn } from "~/lib/dom"
+import { cn } from "~/lib/utils"
 
 interface CheckboxProps
   extends Omit<
