@@ -21,11 +21,8 @@ export let Route = createFileRoute("/api/auth/google/callback")({
           method: "POST",
         })
 
+        if (!tokenRes.ok) throw Error("Google token exchange failed")
         let tokenData = await tokenRes.json()
-        if (!tokenRes.ok) {
-          console.error("Google token exchange failed", tokenData)
-          throw new Error("Failed to exchange token with Google")
-        }
 
         let userRes = await fetch(
           "https://www.googleapis.com/oauth2/v3/userinfo",
@@ -33,7 +30,7 @@ export let Route = createFileRoute("/api/auth/google/callback")({
         )
         let { email } = await userRes.json()
         if (typeof email != "string")
-          throw new Error("No email returned from Google")
+          throw Error("No email returned from Google")
 
         let user = await db.User.findOne({ email })
         user ??= await db.User.create({ email })

@@ -13,7 +13,7 @@ export let authMiddleware = createMiddleware({ type: "function" }).server(
       typeof userId != "string" ||
       !isValidObjectId(userId)
     )
-      throw "Not authorized"
+      throw Error("Not authorized")
 
     return next({ context: { email, userId } })
   },

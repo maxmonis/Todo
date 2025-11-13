@@ -10,6 +10,23 @@ import stylesheet from "../styles.css?url"
 export let Route = createRootRouteWithContext<{
   queryClient: QueryClient
 }>()({
+  errorComponent({ error, reset }) {
+    return (
+      <div>
+        <h1 className="mb-3 text-2xl">Error</h1>
+        <p>
+          {error instanceof Error
+            ? error.message
+            : typeof error == "string"
+              ? error
+              : "Something went wrong"}
+        </p>
+        <button className="mt-3 rounded-lg border px-3 py-1" onClick={reset}>
+          Try Again
+        </button>
+      </div>
+    )
+  },
   head() {
     return {
       links: [{ href: stylesheet, rel: "stylesheet" }],

@@ -10,8 +10,8 @@ export let deleteTodo = createServerFn({ method: "POST" })
   .handler(async ({ context: { userId }, data: id }) => {
     let doc = await db.Todo.findById(id)
 
-    if (!doc) throw "Not found"
-    if (doc.userId.toString() != userId) throw "Not authorized"
+    if (!doc) throw Error("Not found")
+    if (doc.userId.toString() != userId) throw Error("Not authorized")
 
     await doc.deleteOne()
     return id

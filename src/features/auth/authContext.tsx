@@ -42,6 +42,6 @@ export function AuthProvider({ children }: React.PropsWithChildren) {
 
 export function useAuth() {
   let context = useContext(Context)
-  if (!context) throw new Error("useAuth must be used within AuthProvider")
-  return context
+  if (context) return context
+  throw Error("useAuth must be used within AuthProvider")
 }
