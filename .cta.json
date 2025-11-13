@@ -1,6 +1,6 @@
 {
   "addOnOptions": {},
-  "chosenAddOns": ["start", "nitro"],
+  "chosenAddOns": ["start"],
   "framework": "react-cra",
   "git": true,
   "mode": "file-router",
