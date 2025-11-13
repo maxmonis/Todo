@@ -6,6 +6,8 @@ simple todo app. It includes Google authentication and a MongoDB database.
 NOTE: because it's using a release candidate I have not deployed this anywhere
 yet, but it does work locally and is fun to play around with.
 
+https://github.com/user-attachments/assets/a50d388a-9226-453f-8873-ec017571274a
+
 ### Environment
 
 You'll need the following env vars:
