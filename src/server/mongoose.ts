@@ -40,4 +40,4 @@ async function connectDB() {
   }
 }
 
-connectDB()
+if (import.meta.env.MODE != "test") connectDB()
