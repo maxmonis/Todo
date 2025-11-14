@@ -3,13 +3,11 @@ import { cn } from "~/lib/utils"
 interface LoadingSpinnerProps {
   className?: string
   hideLoadingText?: boolean
-  size?: "sm" | "lg"
 }
 
 export function LoadingSpinner({
   className,
   hideLoadingText,
-  size = "lg",
 }: LoadingSpinnerProps) {
   return (
     <div
@@ -20,10 +18,7 @@ export function LoadingSpinner({
     >
       <span className="motion-reduce:hidden">
         <svg
-          className={cn(
-            "animate-spinner fill-current",
-            size == "sm" ? "h-4 w-4" : "h-8 w-8",
-          )}
+          className="h-8 w-8 animate-spinner fill-current"
           preserveAspectRatio="xMidYMid"
           viewBox="0 0 100 100"
         >
