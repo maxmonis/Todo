@@ -12,6 +12,7 @@ export default defineConfig({
   ],
   test: {
     coverage: {
+      exclude: ["./src/server/mongoose.ts"],
       reportsDirectory: "./src/test/coverage",
     },
     dir: "./src",
