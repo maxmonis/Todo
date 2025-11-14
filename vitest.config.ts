@@ -1,15 +1,8 @@
-import tailwindcss from "@tailwindcss/vite"
-import viteReact from "@vitejs/plugin-react"
 import viteTsConfigPaths from "vite-tsconfig-paths"
 import { defineConfig } from "vitest/config"
 
 export default defineConfig({
-  cacheDir: "./node_modules",
-  plugins: [
-    tailwindcss(),
-    viteReact(),
-    viteTsConfigPaths({ projects: ["./tsconfig.json"] }),
-  ],
+  plugins: [viteTsConfigPaths({ projects: ["./tsconfig.json"] })],
   test: {
     coverage: {
       exclude: ["./src/server/mongoose.ts"],
