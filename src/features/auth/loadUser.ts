@@ -3,7 +3,7 @@ import { isValidObjectId } from "mongoose"
 import { db } from "~/server/mongoose"
 import { useAuthSession } from "./useAuthSession"
 
-export let loadUser = createServerFn({ method: "GET" }).handler(async () => {
+export let loadUser = createServerFn().handler(async () => {
   let session = await useAuthSession()
   let { userId } = session.data
 

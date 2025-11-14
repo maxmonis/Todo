@@ -40,7 +40,7 @@ it("renders Google button if logged out", () => {
   })
   render(<AuthButton />)
   fireEvent.click(screen.getByRole("button", { name: /Continue with Google/ }))
-  expect(window.location.href).toStrictEqual(
+  expect(window.location.href).toBe(
     `${import.meta.env.VITE_BASE_URL}/api/auth/google`,
   )
 })

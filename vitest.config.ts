@@ -11,6 +11,9 @@ export default defineConfig({
     viteTsConfigPaths({ projects: ["./tsconfig.json"] }),
   ],
   test: {
+    coverage: {
+      reportsDirectory: "./src/test/coverage",
+    },
     dir: "./src",
     environment: "jsdom",
     globals: true,

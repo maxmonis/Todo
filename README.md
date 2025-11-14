@@ -38,8 +38,14 @@ pnpm dev
 
 ### Testing
 
-Run unit tests
+Run unit tests in watch mode
 
 ```bash
 pnpm test
+```
+
+Run unit tests and generate a coverage report
+
+```bash
+pnpm test run --coverage
 ```
