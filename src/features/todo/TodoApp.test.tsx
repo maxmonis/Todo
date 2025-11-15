@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react"
 import { it, vi } from "vitest"
-import { useAuth } from "../auth/authContext"
+import { useAuth } from "../auth/useAuth"
 import { TodoApp } from "./TodoApp"
 import { useTodos } from "./useTodos"
 
@@ -8,7 +8,7 @@ vi.mock("../auth/AuthButton", () => {
   return { AuthButton: () => <div>MockAuthButton</div> }
 })
 
-vi.mock("../auth/authContext")
+vi.mock("../auth/useAuth")
 
 vi.mock("./TodoForm", () => {
   return { TodoForm: () => <div>MockTodoForm</div> }

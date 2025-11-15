@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { createRouter } from "@tanstack/react-router"
 import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query"
-import { AuthProvider } from "./features/auth/authContext"
+import { AuthProvider } from "./features/auth/AuthProvider"
 import { routeTree } from "./routeTree.gen"
 
 export function getRouter() {

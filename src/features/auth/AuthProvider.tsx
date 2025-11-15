@@ -1,18 +1,12 @@
-import { createContext, useContext, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
+import { AuthContext } from "./AuthContext"
 import { clearSession } from "./clearSession"
 import { loadUser } from "./loadUser"
 
-interface AuthContext {
-  loading: boolean
-  logout: () => void
-  user: { email: string } | null
-}
-
-let Context = createContext<AuthContext | null>(null)
-
 export function AuthProvider({ children }: React.PropsWithChildren) {
   let [loading, setLoading] = useState(true)
-  let [user, setUser] = useState<AuthContext["user"]>(null)
+  let [user, setUser] =
+    useState<NonNullable<React.ContextType<typeof AuthContext>>["user"]>(null)
 
   useEffect(() => {
     init()
@@ -25,7 +19,7 @@ export function AuthProvider({ children }: React.PropsWithChildren) {
   }
 
   return (
-    <Context.Provider
+    <AuthContext.Provider
       value={{
         loading,
         logout: () => {
@@ -36,12 +30,6 @@ export function AuthProvider({ children }: React.PropsWithChildren) {
       }}
     >
       {children}
-    </Context.Provider>
+    </AuthContext.Provider>
   )
-}
-
-export function useAuth() {
-  let context = useContext(Context)
-  if (context) return context
-  throw Error("useAuth must be used within AuthProvider")
 }

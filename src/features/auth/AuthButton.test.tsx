@@ -1,9 +1,9 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import { expect, it, vi } from "vitest"
 import { AuthButton } from "./AuthButton"
-import { useAuth } from "./authContext"
+import { useAuth } from "./useAuth"
 
-vi.mock("./authContext")
+vi.mock("./useAuth")
 
 it("renders nothing while loading", () => {
   vi.mocked(useAuth).mockReturnValueOnce({

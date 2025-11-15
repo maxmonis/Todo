@@ -1,6 +1,6 @@
 import { LoadingSpinner } from "~/components/ui/LoadingSpinner"
 import { AuthButton } from "../auth/AuthButton"
-import { useAuth } from "../auth/authContext"
+import { useAuth } from "../auth/useAuth"
 import { TodoForm } from "./TodoForm"
 import { TodoList } from "./TodoList"
 import { useTodos } from "./useTodos"

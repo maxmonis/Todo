@@ -1,4 +1,4 @@
-import { useAuth } from "./authContext"
+import { useAuth } from "./useAuth"
 
 export function AuthButton() {
   let { loading, logout, user } = useAuth()
