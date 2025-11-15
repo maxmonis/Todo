@@ -18,20 +18,20 @@ vi.mock("@tanstack/react-start", () => {
 vi.mock("./useAuthSession")
 
 it("calls next if session valid", async () => {
+  let nextSpy = vi.fn()
+
   vi.mocked(useAuthSession).mockResolvedValueOnce({
     clear: vi.fn(),
     data: { email: "mock@valid.email", userId: mockUserId },
     id: "mockid",
     update: vi.fn(),
   })
-  let nextSpy = vi.fn()
+
   // @ts-expect-error
   await authMiddleware({ next: nextSpy })
+
   expect(nextSpy).toHaveBeenCalledExactlyOnceWith({
-    context: {
-      email: "mock@valid.email",
-      userId: mockUserId,
-    },
+    context: { email: "mock@valid.email", userId: mockUserId },
   })
 })
 
@@ -42,10 +42,11 @@ it("throws if email missing", async () => {
     id: "mockid",
     update: vi.fn(),
   })
+
   // @ts-expect-error
-  await expect(authMiddleware({ next: vi.fn() })).rejects.toThrowError(
-    "Not authorized",
-  )
+  let res = authMiddleware({ next: vi.fn() })
+
+  await expect(res).rejects.toThrowError("Not authorized")
 })
 
 it("throws if user ID missing", async () => {
@@ -55,10 +56,11 @@ it("throws if user ID missing", async () => {
     id: "mockid",
     update: vi.fn(),
   })
+
   // @ts-expect-error
-  await expect(authMiddleware({ next: vi.fn() })).rejects.toThrowError(
-    "Not authorized",
-  )
+  let res = authMiddleware({ next: vi.fn() })
+
+  await expect(res).rejects.toThrowError("Not authorized")
 })
 
 it("throws if user ID invalid", async () => {
@@ -68,8 +70,9 @@ it("throws if user ID invalid", async () => {
     id: "mockid",
     update: vi.fn(),
   })
+
   // @ts-expect-error
-  await expect(authMiddleware({ next: vi.fn() })).rejects.toThrowError(
-    "Not authorized",
-  )
+  let res = authMiddleware({ next: vi.fn() })
+
+  await expect(res).rejects.toThrowError("Not authorized")
 })

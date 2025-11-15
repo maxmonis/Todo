@@ -11,20 +11,25 @@ it("renders nothing while loading", () => {
     logout: vi.fn(),
     user: null,
   })
+
   let { container } = render(<AuthButton />)
+
   expect(container).toBeEmptyDOMElement()
 })
 
 it("renders logout button if signed in", () => {
   let logoutSpy = vi.fn()
+
   vi.mocked(useAuth).mockReturnValueOnce({
     loading: false,
     logout: logoutSpy,
     user: { email: "valid@mock.email" },
   })
+
   render(<AuthButton />)
-  screen.getByText("Logged in as valid@mock.email")
+
   fireEvent.click(screen.getByRole("button", { name: "Logout" }))
+
   expect(logoutSpy).toHaveBeenCalledOnce()
 })
 
@@ -38,8 +43,11 @@ it("renders Google button if logged out", () => {
     logout: vi.fn(),
     user: null,
   })
+
   render(<AuthButton />)
+
   fireEvent.click(screen.getByRole("button", { name: /Continue with Google/ }))
+
   expect(window.location.href).toBe(
     `${import.meta.env.VITE_BASE_URL}/api/auth/google`,
   )

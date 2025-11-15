@@ -17,7 +17,9 @@ vi.mock("@tanstack/react-start", () => {
     }),
   }
 })
+
 vi.mock("~/server/db")
+
 vi.mock("../auth/authMiddleware", () => {
   return { authMiddleware: vi.fn() }
 })
@@ -29,7 +31,10 @@ it("returns todos from DB", async () => {
       { _id: "buygroceriesid", checked: true, text: "Buy groceries" },
     ]),
   } as any)
-  expect(await loadTodos()).toEqual([
+
+  let res = await loadTodos()
+
+  expect(res).toEqual([
     { checked: false, id: "washcarid", text: "Wash car" },
     { checked: true, id: "buygroceriesid", text: "Buy groceries" },
   ])

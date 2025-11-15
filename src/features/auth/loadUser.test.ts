@@ -17,7 +17,9 @@ vi.mock("@tanstack/react-start", () => {
     }),
   }
 })
+
 vi.mock("~/server/db")
+
 vi.mock("./useAuthSession")
 
 it("returns null if no session exists", async () => {
@@ -27,23 +29,31 @@ it("returns null if no session exists", async () => {
     id: "mockid",
     update: vi.fn(),
   })
-  expect(await loadUser()).toBeNull()
+
+  let res = await loadUser()
+
+  expect(res).toBeNull()
 })
 
 it("clears session and returns null if user ID invalid", async () => {
   let clearSpy = vi.fn()
+
   vi.mocked(useAuthSession).mockResolvedValueOnce({
     clear: clearSpy,
     data: { userId: "invalid" },
     id: "mockid",
     update: vi.fn(),
   })
-  expect(await loadUser()).toBeNull()
+
+  let res = await loadUser()
+
+  expect(res).toBeNull()
   expect(clearSpy).toHaveBeenCalledOnce()
 })
 
 it("clears session and returns null if user not found", async () => {
   let clearSpy = vi.fn()
+
   vi.mocked(useAuthSession).mockResolvedValueOnce({
     clear: clearSpy,
     data: { userId: mockUserId },
@@ -51,13 +61,17 @@ it("clears session and returns null if user not found", async () => {
     update: vi.fn(),
   })
   vi.mocked(db.User.findById).mockResolvedValueOnce(null)
-  expect(await loadUser()).toBeNull()
+
+  let res = await loadUser()
+
+  expect(res).toBeNull()
   expect(db.User.findById).toHaveBeenCalledExactlyOnceWith(mockUserId)
   expect(clearSpy).toHaveBeenCalledOnce()
 })
 
 it("updates session and returns user if found", async () => {
   let updateSpy = vi.fn()
+
   vi.mocked(useAuthSession).mockResolvedValueOnce({
     clear: vi.fn(),
     data: { userId: mockUserId },
@@ -67,7 +81,10 @@ it("updates session and returns user if found", async () => {
   vi.mocked(db.User.findById).mockResolvedValueOnce({
     email: "mock@valid.email",
   })
-  expect(await loadUser()).toEqual({ email: "mock@valid.email" })
+
+  let res = await loadUser()
+
+  expect(res).toEqual({ email: "mock@valid.email" })
   expect(updateSpy).toHaveBeenCalledExactlyOnceWith({
     email: "mock@valid.email",
     userId: mockUserId,

@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, within } from "@testing-library/react"
-import { expect, it, vi } from "vitest"
+import { beforeEach, expect, it, vi } from "vitest"
 import { TodoList } from "./TodoList"
 
 let mocks = vi.hoisted(() => {
@@ -11,6 +11,7 @@ vi.mock("./useDeleteTodo", () => {
     useDeleteTodo: vi.fn().mockReturnValue({ mutate: mocks.deleteTodo }),
   }
 })
+
 vi.mock("./useTodos", () => {
   return {
     useTodos: vi.fn().mockReturnValue({
@@ -21,50 +22,59 @@ vi.mock("./useTodos", () => {
     }),
   }
 })
+
 vi.mock("./useToggleTodo", () => {
   return {
     useToggleTodo: vi.fn().mockReturnValue({ mutate: mocks.toggleTodo }),
   }
 })
 
-it("displays todo checked state", async () => {
+beforeEach(() => {
   render(<TodoList />)
-  let todos = screen.getAllByRole("listitem")
-  expect(todos).toHaveLength(2)
+})
+
+it("displays todo checked state", async () => {
+  let listItems = screen.getAllByRole("listitem")
+
+  expect(listItems).toHaveLength(2)
   expect(
-    within(todos[0]!).getByLabelText("Wash car").getAttribute("aria-checked"),
+    within(listItems[0]!)
+      .getByLabelText("Wash car")
+      .getAttribute("aria-checked"),
   ).toBe("false")
   expect(
-    within(todos[1]!)
+    within(listItems[1]!)
       .getByLabelText("Buy groceries")
       .getAttribute("aria-checked"),
   ).toBe("true")
 })
 
 it("allows todo deletion", async () => {
-  render(<TodoList />)
   let [one, two] = screen.getAllByRole("listitem")
+
   fireEvent.click(within(one!).getByRole("button", { name: "Delete" }))
-  expect(mocks.deleteTodo).toHaveBeenCalledExactlyOnceWith({
+  fireEvent.click(within(two!).getByRole("button", { name: "Delete" }))
+
+  expect(mocks.deleteTodo).toHaveBeenCalledTimes(2)
+  expect(mocks.deleteTodo).toHaveBeenNthCalledWith(1, {
     data: "washcarid",
   })
-  mocks.deleteTodo.mockClear()
-  fireEvent.click(within(two!).getByRole("button", { name: "Delete" }))
-  expect(mocks.deleteTodo).toHaveBeenCalledExactlyOnceWith({
+  expect(mocks.deleteTodo).toHaveBeenNthCalledWith(2, {
     data: "buygroceriesid",
   })
 })
 
 it("allows todo toggling", async () => {
-  render(<TodoList />)
   let [one, two] = screen.getAllByRole("listitem")
+
   fireEvent.click(within(one!).getByLabelText("Wash car"))
-  expect(mocks.toggleTodo).toHaveBeenCalledExactlyOnceWith({
+  fireEvent.click(within(two!).getByLabelText("Buy groceries"))
+
+  expect(mocks.toggleTodo).toHaveBeenCalledTimes(2)
+  expect(mocks.toggleTodo).toHaveBeenNthCalledWith(1, {
     data: "washcarid",
   })
-  mocks.toggleTodo.mockClear()
-  fireEvent.click(within(two!).getByLabelText("Buy groceries"))
-  expect(mocks.toggleTodo).toHaveBeenCalledExactlyOnceWith({
+  expect(mocks.toggleTodo).toHaveBeenNthCalledWith(2, {
     data: "buygroceriesid",
   })
 })

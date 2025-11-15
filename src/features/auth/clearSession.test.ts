@@ -13,15 +13,21 @@ vi.mock("@tanstack/react-start", () => {
     }),
   }
 })
+
 vi.mock("./useAuthSession")
 
 it("clears session and returns message", async () => {
   let clearSpy = vi.fn()
+
   vi.mocked(useAuthSession).mockResolvedValueOnce({
     clear: clearSpy,
     data: {},
     id: "mockid",
     update: vi.fn(),
   })
-  expect(await clearSession()).toBe("Session cleared")
+
+  let res = await clearSession()
+
+  expect(res).toBe("Session cleared")
+  expect(clearSpy).toHaveBeenCalledOnce()
 })

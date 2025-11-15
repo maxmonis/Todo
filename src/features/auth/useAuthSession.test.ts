@@ -13,6 +13,9 @@ it("returns the result of useSession", () => {
   }
   // @ts-expect-error
   useSession.mockReturnValueOnce(mockSession)
-  expect(useAuthSession()).toEqual(mockSession)
+
+  let res = useAuthSession()
+
+  expect(res).toEqual(mockSession)
   expect(useSession).toHaveBeenCalledOnce()
 })
