@@ -1,11 +1,11 @@
 {
   "dependencies": {
-    "@tanstack/react-query": "^5.90.8",
-    "@tanstack/react-router": "^1.136.0",
-    "@tanstack/react-router-ssr-query": "^1.136.0",
-    "@tanstack/react-start": "^1.136.0",
+    "@tanstack/react-query": "^5.90.9",
+    "@tanstack/react-router": "^1.136.5",
+    "@tanstack/react-router-ssr-query": "^1.136.5",
+    "@tanstack/react-start": "^1.136.5",
     "clsx": "^2.1.1",
-    "mongoose": "^8.19.3",
+    "mongoose": "^8.19.4",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "tailwind-merge": "^3.4.0",
@@ -17,10 +17,10 @@
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
     "@types/node": "^22.19.1",
-    "@types/react": "^19.2.4",
+    "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
-    "@vitest/coverage-v8": "4.0.8",
+    "@vitest/coverage-v8": "4.0.9",
     "jsdom": "^27.2.0",
     "prettier": "^3.6.2",
     "prettier-plugin-organize-imports": "^4.3.0",
@@ -29,7 +29,7 @@
     "typescript": "^5.9.3",
     "vite": "^7.2.2",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^4.0.8"
+    "vitest": "^4.0.9"
   },
   "name": "todo",
   "private": true,
