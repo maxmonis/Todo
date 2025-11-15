@@ -2,11 +2,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { deleteTodo } from "./deleteTodo"
 import { useTodos } from "./useTodos"
 
-export function useDeleteTodo() {
+export function useDeleteTodo(id: string) {
   let queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: deleteTodo,
+    mutationFn: () => deleteTodo({ data: id }),
     onSuccess(id) {
       queryClient.setQueryData(
         ["todos"],

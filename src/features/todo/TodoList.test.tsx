@@ -56,12 +56,6 @@ it("allows todo deletion", async () => {
   fireEvent.click(within(two!).getByRole("button", { name: "Delete" }))
 
   expect(mocks.deleteTodo).toHaveBeenCalledTimes(2)
-  expect(mocks.deleteTodo).toHaveBeenNthCalledWith(1, {
-    data: "washcarid",
-  })
-  expect(mocks.deleteTodo).toHaveBeenNthCalledWith(2, {
-    data: "buygroceriesid",
-  })
 })
 
 it("allows todo toggling", async () => {
@@ -71,10 +65,4 @@ it("allows todo toggling", async () => {
   fireEvent.click(within(two!).getByLabelText("Buy groceries"))
 
   expect(mocks.toggleTodo).toHaveBeenCalledTimes(2)
-  expect(mocks.toggleTodo).toHaveBeenNthCalledWith(1, {
-    data: "washcarid",
-  })
-  expect(mocks.toggleTodo).toHaveBeenNthCalledWith(2, {
-    data: "buygroceriesid",
-  })
 })

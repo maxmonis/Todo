@@ -2,11 +2,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { toggleTodo } from "./toggleTodo"
 import { useTodos } from "./useTodos"
 
-export function useToggleTodo() {
+export function useToggleTodo(id: string) {
   let queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: toggleTodo,
+    mutationFn: () => toggleTodo({ data: id }),
     onSuccess(id) {
       queryClient.setQueryData(
         ["todos"],
