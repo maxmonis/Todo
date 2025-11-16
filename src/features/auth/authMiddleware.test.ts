@@ -20,8 +20,8 @@ it("calls next if session valid", async () => {
 
   vi.mocked(useAuthSession).mockResolvedValueOnce({
     clear: vi.fn(),
-    data: { email: "mock@valid.email", userId: mockUserId },
-    id: "mockid",
+    data: { email: "valid@email.mock", userId: mockUserId },
+    id: undefined,
     update: vi.fn(),
   })
 
@@ -29,7 +29,7 @@ it("calls next if session valid", async () => {
   await authMiddleware({ next: nextSpy })
 
   expect(nextSpy).toHaveBeenCalledExactlyOnceWith({
-    context: { email: "mock@valid.email", userId: mockUserId },
+    context: { email: "valid@email.mock", userId: mockUserId },
   })
 })
 
@@ -37,7 +37,7 @@ it("throws if email missing", async () => {
   vi.mocked(useAuthSession).mockResolvedValueOnce({
     clear: vi.fn(),
     data: { userId: mockUserId },
-    id: "mockid",
+    id: undefined,
     update: vi.fn(),
   })
 
@@ -50,8 +50,8 @@ it("throws if email missing", async () => {
 it("throws if user ID missing", async () => {
   vi.mocked(useAuthSession).mockResolvedValueOnce({
     clear: vi.fn(),
-    data: { email: "mock@valid.email" },
-    id: "mockid",
+    data: { email: "valid@email.mock" },
+    id: undefined,
     update: vi.fn(),
   })
 
@@ -64,8 +64,8 @@ it("throws if user ID missing", async () => {
 it("throws if user ID invalid", async () => {
   vi.mocked(useAuthSession).mockResolvedValueOnce({
     clear: vi.fn(),
-    data: { email: "mock@valid.email", userId: "invalid" },
-    id: "mockid",
+    data: { email: "valid@email.mock", userId: "not-a-valid-object-id" },
+    id: undefined,
     update: vi.fn(),
   })
 

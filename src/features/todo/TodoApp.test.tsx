@@ -39,7 +39,7 @@ it("renders spinner if loading todos", () => {
   vi.mocked(useAuth).mockReturnValueOnce({
     loading: false,
     logout: vi.fn(),
-    user: { email: "valid@mock.email" },
+    user: { email: "valid@email.mock" },
   })
   vi.mocked(useTodos).mockReturnValueOnce({
     isLoading: true,
@@ -70,7 +70,7 @@ it("renders list and form if signed in", () => {
   vi.mocked(useAuth).mockReturnValueOnce({
     loading: false,
     logout: vi.fn(),
-    user: { email: "valid@mock.email" },
+    user: { email: "valid@email.mock" },
   })
   vi.mocked(useTodos).mockReturnValueOnce({
     isLoading: false,

@@ -8,7 +8,7 @@ vi.mock("@tanstack/react-start/server", () => {
 
 it("returns the result of useSession", () => {
   let mockSession = {
-    email: "valid@mock.email",
+    email: "valid@email.mock",
     userId: "mockuserId",
   }
 

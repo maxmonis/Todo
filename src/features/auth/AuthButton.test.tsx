@@ -23,7 +23,7 @@ it("renders logout button if signed in", () => {
   vi.mocked(useAuth).mockReturnValueOnce({
     loading: false,
     logout: logoutSpy,
-    user: { email: "valid@mock.email" },
+    user: { email: "valid@email.mock" },
   })
 
   render(<AuthButton />)

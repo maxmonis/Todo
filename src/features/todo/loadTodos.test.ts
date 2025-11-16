@@ -20,15 +20,15 @@ vi.mock("../auth/authMiddleware", () => {
 it("returns todos from DB", async () => {
   vi.mocked(db.Todo.find).mockReturnValueOnce({
     lean: vi.fn().mockResolvedValueOnce([
-      { _id: "washcarid", text: "Wash car" },
-      { _id: "buygroceriesid", checked: true, text: "Buy groceries" },
+      { _id: "mockTodoId123", text: "Wash car" },
+      { _id: "mockTodoId456", checked: true, text: "Buy groceries" },
     ]),
   } as any)
 
   let res = await loadTodos()
 
   expect(res).toEqual([
-    { checked: false, id: "washcarid", text: "Wash car" },
-    { checked: true, id: "buygroceriesid", text: "Buy groceries" },
+    { checked: false, id: "mockTodoId123", text: "Wash car" },
+    { checked: true, id: "mockTodoId456", text: "Buy groceries" },
   ])
 })

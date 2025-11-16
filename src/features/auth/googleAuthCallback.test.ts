@@ -1,5 +1,5 @@
 import { redirect } from "@tanstack/react-router"
-import { beforeAll, expect, it, vi } from "vitest"
+import { expect, it, vi } from "vitest"
 import { db } from "~/server/db"
 import { googleAuthCallback } from "./googleAuthCallback"
 import { useAuthSession } from "./useAuthSession"
@@ -10,20 +10,14 @@ vi.mock("~/server/db")
 
 vi.mock("./useAuthSession")
 
-beforeAll(() => {
-  process.env.GOOGLE_CLIENT_ID = "MOCK_CLIENT_ID"
-  process.env.GOOGLE_CLIENT_SECRET = "MOCK_CLIENT_SECRET"
-  process.env.VITE_BASE_URL = "https://example.mock"
-})
-
 it("throws redirect if no code", async () => {
   vi.mocked(redirect).mockImplementationOnce(vi.fn(args => args))
 
   let res = googleAuthCallback({
-    request: new Request("https://example.mock/api/auth/google/callback"),
+    request: new Request("https://base-url.mock/api/auth/google/callback"),
   })
 
-  await expect(res).rejects.toEqual({ href: "https://example.mock" })
+  await expect(res).rejects.toEqual({ href: "https://base-url.mock" })
   expect(redirect).toHaveBeenCalledOnce()
 })
 
@@ -34,49 +28,49 @@ it("exchanges code, creates session, and redirects", async () => {
     .spyOn(global, "fetch")
     .mockImplementationOnce(() =>
       Promise.resolve({
-        json: () => Promise.resolve({ access_token: "MOCK_TOKEN" }),
+        json: () => Promise.resolve({ access_token: "mock_access_token" }),
       } as any),
     )
     .mockImplementationOnce(() =>
       Promise.resolve({
-        json: () => Promise.resolve({ email: "mock@valid.email" }),
+        json: () => Promise.resolve({ email: "valid@email.mock" }),
       } as any),
     )
 
   vi.mocked(db.User.findOne).mockResolvedValueOnce(null)
   vi.mocked(db.User.create).mockResolvedValueOnce({
-    _id: "USER_ID",
-    email: "mock@valid.email",
+    _id: "mockUserId",
+    email: "valid@email.mock",
   } as any)
 
   vi.mocked(useAuthSession).mockResolvedValueOnce({
     clear: vi.fn(),
     data: {},
-    id: "mockid",
+    id: undefined,
     update: updateSpy,
   })
   vi.mocked(redirect).mockImplementationOnce(
     vi.fn().mockImplementationOnce(req => {
-      expect(new URL(req.href).origin).toBe("https://example.mock")
+      expect(new URL(req.href).origin).toBe("https://base-url.mock")
     }),
   )
 
   await googleAuthCallback({
     request: new Request(
-      "https://example.mock/api/auth/google/callback?code=MOCK_CODE",
+      "https://base-url.mock/api/auth/google/callback?code=mock_code",
     ),
   })
 
   expect(fetchSpy).toHaveBeenCalledTimes(2)
   expect(db.User.findOne).toHaveBeenCalledExactlyOnceWith({
-    email: "mock@valid.email",
+    email: "valid@email.mock",
   })
   expect(db.User.create).toHaveBeenCalledExactlyOnceWith({
-    email: "mock@valid.email",
+    email: "valid@email.mock",
   })
   expect(updateSpy).toHaveBeenCalledExactlyOnceWith({
-    email: "mock@valid.email",
-    userId: "USER_ID",
+    email: "valid@email.mock",
+    userId: "mockUserId",
   })
   expect(redirect).toHaveBeenCalledOnce()
 })
@@ -87,38 +81,38 @@ it("uses existing user if found", async () => {
   vi.spyOn(global, "fetch")
     .mockImplementationOnce(() =>
       Promise.resolve({
-        json: () => Promise.resolve({ access_token: "MOCK_TOKEN" }),
+        json: () => Promise.resolve({ access_token: "mock_access_token" }),
       } as any),
     )
     .mockImplementationOnce(() =>
       Promise.resolve({
-        json: () => Promise.resolve({ email: "mock@valid.email" }),
+        json: () => Promise.resolve({ email: "valid@email.mock" }),
       } as any),
     )
 
   vi.mocked(db.User.findOne).mockResolvedValueOnce({
-    _id: "EXISTING_ID",
-    email: "mock@valid.email",
+    _id: "mockUserId",
+    email: "valid@email.mock",
   })
   vi.mocked(useAuthSession).mockResolvedValueOnce({
     update: updateSpy,
   } as any)
   vi.mocked(redirect).mockImplementationOnce(
     vi.fn().mockImplementationOnce(req => {
-      expect(new URL(req.href).origin).toBe("https://example.mock")
+      expect(new URL(req.href).origin).toBe("https://base-url.mock")
     }),
   )
 
   await googleAuthCallback({
     request: new Request(
-      "https://example.mock/api/auth/google/callback?code=MOCK_CODE",
+      "https://base-url.mock/api/auth/google/callback?code=mock_code",
     ),
   })
 
   expect(db.User.create).not.toHaveBeenCalled()
   expect(updateSpy).toHaveBeenCalledExactlyOnceWith({
-    email: "mock@valid.email",
-    userId: "EXISTING_ID",
+    email: "valid@email.mock",
+    userId: "mockUserId",
   })
   expect(redirect).toHaveBeenCalledOnce()
 })
@@ -130,7 +124,7 @@ it("throws if access_token missing", async () => {
 
   let res = googleAuthCallback({
     request: new Request(
-      "https://example.mock/api/auth/google/callback?code=MOCK_CODE",
+      "https://base-url.mock/api/auth/google/callback?code=mock_code",
     ),
   })
 
@@ -141,7 +135,7 @@ it("throws if email missing", async () => {
   vi.spyOn(global, "fetch")
     .mockImplementationOnce(() =>
       Promise.resolve({
-        json: () => Promise.resolve({ access_token: "MOCK_TOKEN" }),
+        json: () => Promise.resolve({ access_token: "mock_access_token" }),
       } as any),
     )
     .mockImplementationOnce(() =>
@@ -150,7 +144,7 @@ it("throws if email missing", async () => {
 
   let res = googleAuthCallback({
     request: new Request(
-      "https://example.mock/api/auth/google/callback?code=MOCK_CODE",
+      "https://base-url.mock/api/auth/google/callback?code=mock_code",
     ),
   })
 

@@ -19,10 +19,10 @@ vi.mock("../auth/authMiddleware", () => {
 
 it("saves the new todo and returns it", async () => {
   vi.mocked(db.Todo.create).mockImplementationOnce((args: any) => {
-    return Promise.resolve({ ...args, _id: "mockid" })
+    return Promise.resolve({ ...args, _id: "mockTodoId" })
   })
 
   let res = await addTodo({ data: "Fix faucet" })
 
-  expect(res).toEqual({ checked: false, id: "mockid", text: "Fix faucet" })
+  expect(res).toEqual({ checked: false, id: "mockTodoId", text: "Fix faucet" })
 })

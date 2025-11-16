@@ -15,7 +15,7 @@ it("clears session and returns message", async () => {
   vi.mocked(useAuthSession).mockResolvedValueOnce({
     clear: clearSpy,
     data: {},
-    id: "mockid",
+    id: undefined,
     update: vi.fn(),
   })
 

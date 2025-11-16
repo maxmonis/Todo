@@ -4,15 +4,17 @@ import { ErrorComponent } from "./ErrorComponent"
 
 describe("ErrorComponent", () => {
   it("handles Error", () => {
-    render(<ErrorComponent error={Error("Error error")} reset={vi.fn()} />)
+    render(
+      <ErrorComponent error={Error("Mock error message")} reset={vi.fn()} />,
+    )
 
-    screen.getByText("Error error")
+    screen.getByText("Mock error message")
   })
 
   it("handles string", () => {
-    render(<ErrorComponent error={"String error"} reset={vi.fn()} />)
+    render(<ErrorComponent error={"Mock error message"} reset={vi.fn()} />)
 
-    screen.getByText("String error")
+    screen.getByText("Mock error message")
   })
 
   it("handles unknown", () => {
@@ -24,7 +26,7 @@ describe("ErrorComponent", () => {
   it("calls reset when button clicked", () => {
     let resetSpy = vi.fn()
 
-    render(<ErrorComponent error={"Test error"} reset={resetSpy} />)
+    render(<ErrorComponent error={null} reset={resetSpy} />)
 
     fireEvent.click(screen.getByRole("button", { name: "Try Again" }))
 

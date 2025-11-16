@@ -31,14 +31,14 @@ it("exits process if connection fails", async () => {
   })
 
   import.meta.env.MODE = "production"
-  vi.mocked(mongoose.connect).mockRejectedValueOnce(Error("Mock error"))
+  vi.mocked(mongoose.connect).mockRejectedValueOnce(Error("Mock error message"))
 
   let res = connectDB()
 
   await expect(res).rejects.toThrow("process.exit called")
   expect(errorSpy).toHaveBeenCalledExactlyOnceWith(
     "Failed to connect to MongoDB:",
-    Error("Mock error"),
+    Error("Mock error message"),
   )
   expect(exitSpy).toHaveBeenCalledExactlyOnceWith(1)
 

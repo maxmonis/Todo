@@ -15,11 +15,11 @@ it("loads todos from DB", async () => {
   vi.mocked(useAuth).mockReturnValue({
     loading: false,
     logout: vi.fn(),
-    user: { email: "valid@mock.email" },
+    user: { email: "valid@email.mock" },
   })
   vi.mocked(loadTodos).mockResolvedValueOnce([
-    { checked: false, id: "washcarid", text: "Wash car" },
-    { checked: true, id: "buygroceriesid", text: "Buy groceries" },
+    { checked: false, id: "mockTodoId123", text: "Wash car" },
+    { checked: true, id: "mockTodoId456", text: "Buy groceries" },
   ])
 
   let { result } = renderHook(() => useTodos(), { wrapper })
@@ -27,8 +27,8 @@ it("loads todos from DB", async () => {
   expect(result.current.data).toEqual([])
   await waitFor(() =>
     expect(result.current.data).toEqual([
-      { checked: false, id: "washcarid", text: "Wash car" },
-      { checked: true, id: "buygroceriesid", text: "Buy groceries" },
+      { checked: false, id: "mockTodoId123", text: "Wash car" },
+      { checked: true, id: "mockTodoId456", text: "Buy groceries" },
     ]),
   )
 })

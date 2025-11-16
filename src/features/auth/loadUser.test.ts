@@ -33,7 +33,7 @@ it("clears session and returns null if user ID invalid", async () => {
 
   vi.mocked(useAuthSession).mockResolvedValueOnce({
     clear: clearSpy,
-    data: { userId: "invalid" },
+    data: { userId: "not-a-valid-object-id" },
     id: "mockid",
     update: vi.fn(),
   })
@@ -73,14 +73,14 @@ it("updates session and returns user if found", async () => {
     update: updateSpy,
   })
   vi.mocked(db.User.findById).mockResolvedValueOnce({
-    email: "mock@valid.email",
+    email: "valid@email.mock",
   })
 
   let res = await loadUser()
 
-  expect(res).toEqual({ email: "mock@valid.email" })
+  expect(res).toEqual({ email: "valid@email.mock" })
   expect(updateSpy).toHaveBeenCalledExactlyOnceWith({
-    email: "mock@valid.email",
+    email: "valid@email.mock",
     userId: mockUserId,
   })
 })
