@@ -7,12 +7,12 @@ export function useToggleTodo(id: string) {
 
   return useMutation({
     mutationFn: () => toggleTodo({ data: id }),
-    onSuccess(id) {
+    onSuccess({ checked, id }) {
       queryClient.setQueryData(
         ["todos"],
         (oldTodos: ReturnType<typeof useTodos>["data"]) => {
           return oldTodos.map<(typeof oldTodos)[number]>(todo =>
-            todo.id == id ? { ...todo, checked: !todo.checked } : todo,
+            todo.id == id ? { ...todo, checked } : todo,
           )
         },
       )

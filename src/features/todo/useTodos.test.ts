@@ -1,0 +1,34 @@
+import { renderHook, waitFor } from "@testing-library/react"
+import { expect, it, vi } from "vitest"
+import { mockQueryClient } from "~/test/helpers/mockQueryClient"
+import { useAuth } from "../auth/useAuth"
+import { loadTodos } from "./loadTodos"
+import { useTodos } from "./useTodos"
+
+vi.mock("../auth/useAuth")
+
+vi.mock("./loadTodos")
+
+let { wrapper } = mockQueryClient()
+
+it("loads todos from DB", async () => {
+  vi.mocked(useAuth).mockReturnValue({
+    loading: false,
+    logout: vi.fn(),
+    user: { email: "valid@mock.email" },
+  })
+  vi.mocked(loadTodos).mockResolvedValueOnce([
+    { checked: false, id: "washcarid", text: "Wash car" },
+    { checked: true, id: "buygroceriesid", text: "Buy groceries" },
+  ])
+
+  let { result } = renderHook(() => useTodos(), { wrapper })
+
+  expect(result.current.data).toEqual([])
+  await waitFor(() =>
+    expect(result.current.data).toEqual([
+      { checked: false, id: "washcarid", text: "Wash car" },
+      { checked: true, id: "buygroceriesid", text: "Buy groceries" },
+    ]),
+  )
+})

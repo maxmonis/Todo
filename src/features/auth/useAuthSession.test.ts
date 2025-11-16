@@ -2,9 +2,9 @@ import { useSession } from "@tanstack/react-start/server"
 import { expect, it, vi } from "vitest"
 import { useAuthSession } from "./useAuthSession"
 
-vi.mock("@tanstack/react-start/server", () => ({
-  useSession: vi.fn(),
-}))
+vi.mock("@tanstack/react-start/server", () => {
+  return { useSession: vi.fn() }
+})
 
 it("returns the result of useSession", () => {
   let mockSession = {

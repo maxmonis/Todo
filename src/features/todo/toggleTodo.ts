@@ -16,5 +16,5 @@ export let toggleTodo = createServerFn({ method: "POST" })
     doc.checked = !doc.checked
     await doc.save()
 
-    return id
+    return { checked: doc.checked, id }
   })

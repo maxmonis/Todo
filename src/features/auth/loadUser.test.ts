@@ -1,21 +1,14 @@
 import mongoose from "mongoose"
 import { expect, it, vi } from "vitest"
 import { db } from "~/server/db"
+import { mockCreateServerFn } from "~/test/helpers/mockCreateServerFn"
 import { loadUser } from "./loadUser"
 import { useAuthSession } from "./useAuthSession"
 
 let mockUserId = new mongoose.Types.ObjectId().toString()
 
 vi.mock("@tanstack/react-start", () => {
-  return {
-    createServerFn: vi.fn(() => {
-      return {
-        handler: vi.fn((cb: Function) => {
-          return vi.fn(() => cb())
-        }),
-      }
-    }),
-  }
+  return { createServerFn: mockCreateServerFn }
 })
 
 vi.mock("~/server/db")

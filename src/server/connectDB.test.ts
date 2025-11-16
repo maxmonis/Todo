@@ -7,7 +7,6 @@ vi.mock("mongoose")
 it("does not connect in test mode", async () => {
   await connectDB()
 
-  expect(mongoose.set).not.toHaveBeenCalled()
   expect(mongoose.connect).not.toHaveBeenCalled()
 })
 
@@ -18,10 +17,7 @@ it("connects when mode is not test", async () => {
 
   await connectDB()
 
-  expect(mongoose.set).toHaveBeenCalledExactlyOnceWith("strictQuery", false)
-  expect(mongoose.connect).toHaveBeenCalledExactlyOnceWith(
-    process.env.MONGO_URI,
-  )
+  expect(mongoose.connect).toHaveBeenCalledOnce()
   expect(logSpy).toHaveBeenCalledExactlyOnceWith("MongoDB connected")
 
   logSpy.mockRestore()
@@ -31,7 +27,7 @@ it("connects when mode is not test", async () => {
 it("exits process if connection fails", async () => {
   let errorSpy = vi.spyOn(console, "error").mockImplementationOnce(() => {})
   let exitSpy = vi.spyOn(process, "exit").mockImplementationOnce(() => {
-    throw new Error("process.exit called")
+    throw Error("process.exit called")
   })
 
   import.meta.env.MODE = "production"

@@ -1,17 +1,10 @@
 import { expect, it, vi } from "vitest"
+import { mockCreateServerFn } from "~/test/helpers/mockCreateServerFn"
 import { clearSession } from "./clearSession"
 import { useAuthSession } from "./useAuthSession"
 
 vi.mock("@tanstack/react-start", () => {
-  return {
-    createServerFn: vi.fn(() => {
-      return {
-        handler: vi.fn((cb: Function) => {
-          return vi.fn(() => cb())
-        }),
-      }
-    }),
-  }
+  return { createServerFn: mockCreateServerFn }
 })
 
 vi.mock("./useAuthSession")

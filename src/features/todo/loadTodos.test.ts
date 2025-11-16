@@ -1,27 +1,20 @@
 import { expect, it, vi } from "vitest"
 import { db } from "~/server/db"
+import { mockCreateServerFn } from "~/test/helpers/mockCreateServerFn"
 import { loadTodos } from "./loadTodos"
 
 vi.mock("@tanstack/react-start", () => {
-  return {
-    createServerFn: vi.fn(() => {
-      return {
-        middleware: vi.fn(() => {
-          return {
-            handler: vi.fn((cb: Function) => {
-              return vi.fn(() => cb({ context: { userId: "mockUserId" } }))
-            }),
-          }
-        }),
-      }
-    }),
-  }
+  return { createServerFn: mockCreateServerFn }
 })
 
 vi.mock("~/server/db")
 
 vi.mock("../auth/authMiddleware", () => {
-  return { authMiddleware: vi.fn() }
+  return {
+    authMiddleware: vi
+      .fn()
+      .mockReturnValue({ context: { userId: "mockUserId" } }),
+  }
 })
 
 it("returns todos from DB", async () => {
