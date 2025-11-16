@@ -6,8 +6,9 @@ import { AuthProvider } from "./AuthProvider"
 import { clearSession } from "./clearSession"
 import { loadUser } from "./loadUser"
 
-vi.mock("./loadUser")
 vi.mock("./clearSession")
+
+vi.mock("./loadUser")
 
 function TestComponent() {
   let context = useContext(AuthContext)
@@ -42,7 +43,7 @@ it("updates loading when signed out", async () => {
 })
 
 it("updates user and loading when logged in", async () => {
-  vi.mocked(loadUser).mockResolvedValueOnce({ email: "test@example.com" })
+  vi.mocked(loadUser).mockResolvedValueOnce({ email: "mock@valid.email" })
 
   render(
     <AuthProvider>
@@ -55,11 +56,11 @@ it("updates user and loading when logged in", async () => {
   })
 
   screen.getByText("loading:false")
-  screen.getByText("user:test@example.com")
+  screen.getByText("user:mock@valid.email")
 })
 
 it("clears session when logout clicked", async () => {
-  vi.mocked(loadUser).mockResolvedValueOnce({ email: "test@example.com" })
+  vi.mocked(loadUser).mockResolvedValueOnce({ email: "mock@valid.email" })
 
   render(
     <AuthProvider>

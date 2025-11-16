@@ -8,9 +8,7 @@ let mockUserId = new mongoose.Types.ObjectId().toString()
 vi.mock("@tanstack/react-start", () => {
   return {
     createMiddleware: vi.fn(() => {
-      return {
-        server: vi.fn((handler: Function) => handler),
-      }
+      return { server: vi.fn((handler: Function) => handler) }
     }),
   }
 })

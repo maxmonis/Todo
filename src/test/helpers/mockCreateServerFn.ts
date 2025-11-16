@@ -1,15 +1,15 @@
 import { vi } from "vitest"
 
 export let mockCreateServerFn = vi.fn(() => {
-  let validator: { parseAsync: Function } | null = null
   let middlewares: Array<Function> = []
+  let validator: { parseAsync: Function } | null = null
 
   return {
     handler(cb: Function) {
       return async ({
-        data,
         context,
-      }: { data?: unknown; context?: unknown } = {}) => {
+        data,
+      }: { context?: unknown; data?: unknown } = {}) => {
         if (validator) data = await validator.parseAsync(data)
 
         for (let middleware of middlewares) context = await middleware(context)
@@ -18,12 +18,12 @@ export let mockCreateServerFn = vi.fn(() => {
       }
     },
 
-    inputValidator(arg: { parseAsync: Function }) {
+    inputValidator(arg: typeof validator) {
       validator = arg
       return this
     },
 
-    middleware(arg: Array<Function>) {
+    middleware(arg: typeof middlewares) {
       middlewares = arg
       return this
     },

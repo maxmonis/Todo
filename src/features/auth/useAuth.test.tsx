@@ -3,20 +3,20 @@ import { expect, it, vi } from "vitest"
 import { AuthContext } from "./AuthContext"
 import { useAuth } from "./useAuth"
 
-let mockContext = {
-  loading: false,
-  logout: vi.fn(),
-  user: { email: "test@example.com" },
-}
-
-function wrapper({ children }: React.PropsWithChildren) {
-  return (
-    <AuthContext.Provider value={mockContext}>{children}</AuthContext.Provider>
-  )
-}
-
 it("returns context", () => {
-  let { result } = renderHook(() => useAuth(), { wrapper })
+  let mockContext = {
+    loading: false,
+    logout: vi.fn(),
+    user: { email: "mock@valid.email" },
+  }
+
+  let { result } = renderHook(() => useAuth(), {
+    wrapper: ({ children }) => (
+      <AuthContext.Provider value={mockContext}>
+        {children}
+      </AuthContext.Provider>
+    ),
+  })
 
   expect(result.current).toBe(mockContext)
 })

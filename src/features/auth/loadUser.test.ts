@@ -42,6 +42,7 @@ it("clears session and returns null if user ID invalid", async () => {
 
   expect(res).toBeNull()
   expect(clearSpy).toHaveBeenCalledOnce()
+  expect(db.User.findById).not.toHaveBeenCalled()
 })
 
 it("clears session and returns null if user not found", async () => {

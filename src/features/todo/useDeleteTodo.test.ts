@@ -9,7 +9,7 @@ vi.mock("./deleteTodo")
 let { queryClient, wrapper } = mockQueryClient()
 
 it("removes cached todo on success", async () => {
-  vi.mocked(deleteTodo).mockResolvedValue("washcarid")
+  vi.mocked(deleteTodo).mockResolvedValueOnce("washcarid")
   queryClient.setQueryData(
     ["todos"],
     [

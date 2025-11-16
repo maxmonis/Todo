@@ -11,6 +11,7 @@ it("returns the result of useSession", () => {
     email: "valid@mock.email",
     userId: "mockuserId",
   }
+
   // @ts-expect-error
   useSession.mockReturnValueOnce(mockSession)
 

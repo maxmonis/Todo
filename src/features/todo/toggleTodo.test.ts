@@ -40,7 +40,7 @@ it("throws if userId does not match", async () => {
   await expect(res).rejects.toThrow("Not authorized")
 })
 
-it("toggles todo and returns ID and status", async () => {
+it("toggles todo then returns ID and status", async () => {
   let saveSpy = vi.fn()
 
   vi.mocked(db.Todo.findById).mockResolvedValueOnce({

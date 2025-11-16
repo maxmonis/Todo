@@ -23,11 +23,13 @@ vi.mock("@tanstack/react-router", async () => {
 
 vi.mock("@tanstack/react-router-ssr-query")
 
-vi.mock("./features/auth/AuthProvider", () => ({
-  AuthProvider: vi.fn(({ children }: React.PropsWithChildren) => (
-    <div data-testid="auth">{children}</div>
-  )),
-}))
+vi.mock("./features/auth/AuthProvider", () => {
+  return {
+    AuthProvider: vi.fn(({ children }: React.PropsWithChildren) => (
+      <div data-testid="auth">{children}</div>
+    )),
+  }
+})
 
 it("Wrap calls both providers and renders children", () => {
   getRouter()

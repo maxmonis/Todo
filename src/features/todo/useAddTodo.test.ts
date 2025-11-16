@@ -9,7 +9,7 @@ vi.mock("./addTodo")
 let { queryClient, wrapper } = mockQueryClient()
 
 it("adds new todo to cache on success", async () => {
-  vi.mocked(addTodo).mockResolvedValue({
+  vi.mocked(addTodo).mockResolvedValueOnce({
     checked: false,
     id: "fixfaucetid",
     text: "Fix faucet",

@@ -9,7 +9,10 @@ vi.mock("./toggleTodo")
 let { queryClient, wrapper } = mockQueryClient()
 
 it("toggles cached todo on success", async () => {
-  vi.mocked(toggleTodo).mockResolvedValue({ checked: true, id: "washcarid" })
+  vi.mocked(toggleTodo).mockResolvedValueOnce({
+    checked: true,
+    id: "washcarid",
+  })
   queryClient.setQueryData(
     ["todos"],
     [

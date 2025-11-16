@@ -15,7 +15,7 @@ describe("ErrorComponent", () => {
     screen.getByText("String error")
   })
 
-  it("displays default", () => {
+  it("handles unknown", () => {
     render(<ErrorComponent error={null} reset={vi.fn()} />)
 
     expect(screen.getByText("Something went wrong"))
