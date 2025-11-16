@@ -19,6 +19,6 @@ it("sets the correct head metadata", () => {
   expect(head.meta).toEqual([
     { charSet: "utf-8" },
     { content: "initial-scale=1, width=device-width", name: "viewport" },
-    { title: "Todo App" },
+    { title: "Todo" },
   ])
 })

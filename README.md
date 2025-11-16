@@ -1,4 +1,4 @@
-## Todo App
+## Todo
 
 I wanted to try out TanStack Start (which is still in beta) so I made this
 simple todo app with Google authentication and a MongoDB database.

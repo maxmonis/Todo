@@ -18,8 +18,8 @@
       "type": "image/png"
     }
   ],
-  "name": "Todo Application",
-  "short_name": "Todo App",
+  "name": "Todo",
+  "short_name": "Todo",
   "start_url": ".",
   "theme_color": "#000000"
 }

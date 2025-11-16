@@ -15,7 +15,7 @@ export let Route = createRootRouteWithContext<{
       meta: [
         { charSet: "utf-8" },
         { content: "initial-scale=1, width=device-width", name: "viewport" },
-        { title: "Todo App" },
+        { title: "Todo" },
       ],
     }
   },
