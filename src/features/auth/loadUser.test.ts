@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 import { expect, it, vi } from "vitest"
 import { db } from "~/server/db"
-import { mockCreateServerFn } from "~/test/helpers/mockCreateServerFn"
+import { mockCreateServerFn } from "~/test/mocks/mockCreateServerFn"
 import { loadUser } from "./loadUser"
 import { useAuthSession } from "./useAuthSession"
 

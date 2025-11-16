@@ -1,6 +1,6 @@
 import { renderHook, waitFor } from "@testing-library/react"
 import { expect, it, vi } from "vitest"
-import { mockQueryClient } from "~/test/helpers/mockQueryClient"
+import { mockQueryClient } from "~/test/mocks/mockQueryClient"
 import { deleteTodo } from "./deleteTodo"
 import { useDeleteTodo } from "./useDeleteTodo"
 

@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 import { expect, it, vi } from "vitest"
 import { db } from "~/server/db"
-import { mockCreateServerFn } from "~/test/helpers/mockCreateServerFn"
+import { mockCreateServerFn } from "~/test/mocks/mockCreateServerFn"
 import { toggleTodo } from "./toggleTodo"
 
 let mockTodoId = new mongoose.Types.ObjectId().toString()

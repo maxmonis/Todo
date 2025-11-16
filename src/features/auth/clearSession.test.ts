@@ -1,5 +1,5 @@
 import { expect, it, vi } from "vitest"
-import { mockCreateServerFn } from "~/test/helpers/mockCreateServerFn"
+import { mockCreateServerFn } from "~/test/mocks/mockCreateServerFn"
 import { clearSession } from "./clearSession"
 import { useAuthSession } from "./useAuthSession"
 
