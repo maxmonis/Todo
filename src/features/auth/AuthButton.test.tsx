@@ -5,7 +5,7 @@ import { useAuth } from "./useAuth"
 
 vi.mock("./useAuth")
 
-it("renders nothing while loading", () => {
+it("renders nothing if loading", () => {
   vi.mocked(useAuth).mockReturnValueOnce({
     loading: true,
     logout: vi.fn(),

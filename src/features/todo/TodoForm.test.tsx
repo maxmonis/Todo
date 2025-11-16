@@ -15,7 +15,7 @@ beforeEach(() => {
   render(<TodoForm />)
 })
 
-it("prevents empty submission", async () => {
+it("prevents empty submission", () => {
   expect(screen.getByRole("button", { name: "Add Todo" })).toBeDisabled()
 })
 

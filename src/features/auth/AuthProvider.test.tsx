@@ -11,13 +11,13 @@ vi.mock("./clearSession")
 vi.mock("./loadUser")
 
 function TestComponent() {
-  let context = useContext(AuthContext)
+  let context = useContext(AuthContext)!
 
   return (
     <>
-      <div>loading:{context?.loading ? "true" : "false"}</div>
-      <div>user:{context?.user ? context.user.email : "null"}</div>
-      <button onClick={context?.logout}>Logout</button>
+      <div>loading:{context.loading ? "true" : "false"}</div>
+      <div>user:{context.user ? context.user.email : "null"}</div>
+      <button onClick={context.logout}>Logout</button>
     </>
   )
 }

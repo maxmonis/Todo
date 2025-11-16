@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react"
+import { render, screen, within } from "@testing-library/react"
 import { it, vi } from "vitest"
 import { getRouter } from "./router"
 
@@ -42,7 +42,7 @@ it("Wrap calls both providers and renders children", () => {
     </Wrap>,
   )
 
-  screen.getByTestId("auth")
-  screen.getByTestId("query")
-  screen.getByTestId("child")
+  within(within(screen.getByTestId("auth")).getByTestId("query")).getByTestId(
+    "child",
+  )
 })

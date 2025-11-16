@@ -33,7 +33,7 @@ beforeEach(() => {
   render(<TodoList />)
 })
 
-it("displays todo checked state", async () => {
+it("displays todo checked state", () => {
   let listItems = screen.getAllByRole("listitem")
 
   expect(listItems).toHaveLength(2)
@@ -49,7 +49,7 @@ it("displays todo checked state", async () => {
   ).toBe("true")
 })
 
-it("allows todo deletion", async () => {
+it("allows todo deletion", () => {
   let [one, two] = screen.getAllByRole("listitem")
 
   fireEvent.click(within(one!).getByRole("button", { name: "Delete" }))
@@ -58,7 +58,7 @@ it("allows todo deletion", async () => {
   expect(mocks.deleteTodo).toHaveBeenCalledTimes(2)
 })
 
-it("allows todo toggling", async () => {
+it("allows todo toggling", () => {
   let [one, two] = screen.getAllByRole("listitem")
 
   fireEvent.click(within(one!).getByLabelText("Wash car"))
