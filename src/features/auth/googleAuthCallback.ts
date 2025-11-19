@@ -26,11 +26,11 @@ export async function googleAuthCallback({ request }: { request: Request }) {
   let { email } = await userRes.json()
   if (typeof email != "string") throw Error("No email")
 
-  let user = await db.User.findOne({ email })
-  user ??= await db.User.create({ email })
+  let doc = await db.User.findOne({ email })
+  doc ??= await db.User.create({ email })
 
   let session = await useAuthSession()
-  await session.update({ email: user.email, userId: user._id.toString() })
+  await session.update({ email: doc.email, userId: doc._id.toString() })
 
   return redirect({ href: process.env.VITE_BASE_URL })
 }
