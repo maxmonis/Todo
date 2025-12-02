@@ -1,13 +1,13 @@
-import { createContext } from "react"
+import { createContext } from "react";
 
 interface Context {
-  loading: boolean
-  logout: () => void
-  user: User | null
+  loading: boolean;
+  logout: () => void;
+  user: User | null;
 }
 
 interface User {
-  email: string
+  email: string;
 }
 
-export let AuthContext = createContext<Context | null>(null)
+export const AuthContext = createContext<Context | null>(null);

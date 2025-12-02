@@ -1,56 +1,78 @@
-import mongoose from "mongoose"
-import { expect, it, vi } from "vitest"
-import { db } from "~/server/db"
-import { mockCreateServerFn } from "~/test/mocks/mockCreateServerFn"
-import { toggleTodo } from "./toggleTodo"
+import mongoose from "mongoose";
+import { expect, it, vi } from "vitest";
+import { toggleTodo } from "./toggleTodo";
+import { db } from "@/server/db";
 
-let mockTodoId = new mongoose.Types.ObjectId().toString()
+vi.mock("@tanstack/react-start", async () => {
+  const { mockCreateServerFn } = await import(
+    "@/test/mocks/mockCreateServerFn"
+  );
 
-vi.mock("@tanstack/react-start", () => {
-  return { createServerFn: mockCreateServerFn }
-})
-
-vi.mock("~/server/db")
-
+  return {
+    createServerFn: mockCreateServerFn,
+  };
+});
 vi.mock("../auth/authMiddleware", () => {
-  return { authMiddleware: vi.fn().mockReturnValue({ userId: "mockUserId" }) }
-})
+  return {
+    authMiddleware: vi.fn().mockReturnValue({
+      userId: "mock-user-id",
+    }),
+  };
+});
+vi.mock("@/server/db");
+
+const mockTodoId = new mongoose.Types.ObjectId().toString();
 
 it("rejects invalid objectId", async () => {
-  let res = toggleTodo({ data: "not-a-valid-object-id" })
+  const res = toggleTodo({
+    data: "not-a-valid-object-id",
+  });
 
-  await expect(res).rejects.toThrow()
-})
+  await expect(res).rejects.toThrow();
+});
 
 it("throws if not found", async () => {
-  vi.mocked(db.Todo.findById).mockResolvedValueOnce(null)
+  vi.mocked(db.Todo.findById).mockResolvedValueOnce(null);
 
-  let res = toggleTodo({ data: mockTodoId })
+  const res = toggleTodo({
+    data: mockTodoId,
+  });
 
-  await expect(res).rejects.toThrow("Not found")
-})
+  await expect(res).rejects.toThrow("Not found");
+});
 
 it("throws if userId does not match", async () => {
   vi.mocked(db.Todo.findById).mockResolvedValueOnce({
-    userId: "not-the-matching-user-id",
-  })
+    userId: {
+      toString: () => "not-the-matching-user-id",
+    },
+  });
 
-  let res = toggleTodo({ data: mockTodoId })
+  const res = toggleTodo({
+    data: mockTodoId,
+  });
 
-  await expect(res).rejects.toThrow("Not authorized")
-})
+  await expect(res).rejects.toThrow("Not authorized");
+});
 
 it("toggles todo then returns ID and status", async () => {
-  let saveSpy = vi.fn()
+  const saveSpy = vi.fn();
 
   vi.mocked(db.Todo.findById).mockResolvedValueOnce({
     checked: true,
     save: saveSpy,
-    userId: "mockUserId",
-  })
+    userId: {
+      toString: () => "mock-user-id",
+    },
+  });
 
-  let res = await toggleTodo({ data: mockTodoId })
+  const res = await toggleTodo({
+    data: mockTodoId,
+  });
 
-  expect(res).toEqual({ checked: false, id: mockTodoId })
-  expect(saveSpy).toHaveBeenCalledOnce()
-})
+  expect(res).toEqual({
+    checked: false,
+    id: mockTodoId,
+  });
+  expect(saveSpy).toHaveBeenCalledOnce();
+});

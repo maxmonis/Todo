@@ -1,22 +1,24 @@
-import { useSession } from "@tanstack/react-start/server"
-import { expect, it, vi } from "vitest"
-import { useAuthSession } from "./useAuthSession"
+import { useSession } from "@tanstack/react-start/server";
+import { expect, it, vi } from "vitest";
+import { useAuthSession } from "./useAuthSession";
 
 vi.mock("@tanstack/react-start/server", () => {
-  return { useSession: vi.fn() }
-})
+  return {
+    useSession: vi.fn(),
+  };
+});
 
 it("returns the result of useSession", () => {
-  let mockSession = {
+  const mockSession = {
     email: "valid@email.mock",
-    userId: "mockuserId",
-  }
+    userId: "mock-user-id",
+  };
 
   // @ts-expect-error
-  useSession.mockReturnValueOnce(mockSession)
+  useSession.mockReturnValueOnce(mockSession);
 
-  let res = useAuthSession()
+  const res = useAuthSession();
 
-  expect(res).toEqual(mockSession)
-  expect(useSession).toHaveBeenCalledOnce()
-})
+  expect(res).toEqual(mockSession);
+  expect(useSession).toHaveBeenCalledOnce();
+});

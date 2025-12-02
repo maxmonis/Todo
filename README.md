@@ -36,6 +36,12 @@ Start the development server:
 pnpm dev
 ```
 
+Lint the code, fixing resolvable issues:
+
+```bash
+pnpm lint
+```
+
 Run unit tests in watch mode:
 
 ```bash

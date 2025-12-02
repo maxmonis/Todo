@@ -1,30 +1,33 @@
-import { useAuth } from "./useAuth"
+import { useAuth } from "./useAuth";
 
 export function AuthButton() {
-  let { loading, logout, user } = useAuth()
+  const { loading, logout, user } = useAuth();
 
-  if (loading) return null
+  if (loading) {
+    return null;
+  }
 
-  if (user)
+  if (user) {
     return (
       <div>
         <p className="text-sm">Logged in as {user.email}</p>
         <button
           className="mt-1 text-red-500"
           onClick={() => {
-            logout()
+            logout();
           }}
         >
           Logout
         </button>
       </div>
-    )
+    );
+  }
 
   return (
     <button
       className="flex h-10 w-full items-center justify-center rounded-lg border bg-white"
       onClick={() => {
-        window.location.href = `${import.meta.env.VITE_BASE_URL}/api/auth/google`
+        window.location.href = `${import.meta.env.VITE_BASE_URL}/api/auth/google`;
       }}
       type="button"
     >
@@ -59,5 +62,5 @@ export function AuthButton() {
         Continue with Google
       </span>
     </button>
-  )
+  );
 }

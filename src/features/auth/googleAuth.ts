@@ -1,4 +1,4 @@
-import { redirect } from "@tanstack/react-router"
+import { redirect } from "@tanstack/react-router";
 
 export function googleAuth() {
   return redirect({
@@ -9,5 +9,5 @@ export function googleAuth() {
       response_type: "code",
       scope: "email",
     })}`,
-  })
+  });
 }

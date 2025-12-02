@@ -1,8 +1,8 @@
-import { useSession } from "@tanstack/react-start/server"
+import { useSession } from "@tanstack/react-start/server";
 
 interface AuthSession {
-  email: string
-  userId: string
+  email: string;
+  userId: string;
 }
 
 export function useAuthSession() {
@@ -10,10 +10,10 @@ export function useAuthSession() {
     cookie: {
       httpOnly: true,
       sameSite: "lax",
-      secure: process.env.NODE_ENV == "production",
+      secure: process.env.NODE_ENV === "production",
     },
     maxAge: 60 * 60 * 24 * 14,
     name: "auth-session",
     password: process.env.SESSION_SECRET!,
-  })
+  });
 }

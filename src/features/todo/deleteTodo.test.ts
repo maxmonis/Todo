@@ -1,55 +1,74 @@
-import mongoose from "mongoose"
-import { expect, it, vi } from "vitest"
-import { db } from "~/server/db"
-import { mockCreateServerFn } from "~/test/mocks/mockCreateServerFn"
-import { deleteTodo } from "./deleteTodo"
+import mongoose from "mongoose";
+import { expect, it, vi } from "vitest";
+import { deleteTodo } from "./deleteTodo";
+import { db } from "@/server/db";
 
-let mockTodoId = new mongoose.Types.ObjectId().toString()
+vi.mock("@tanstack/react-start", async () => {
+  const { mockCreateServerFn } = await import(
+    "@/test/mocks/mockCreateServerFn"
+  );
 
-vi.mock("@tanstack/react-start", () => {
-  return { createServerFn: mockCreateServerFn }
-})
-
-vi.mock("~/server/db")
-
+  return {
+    createServerFn: mockCreateServerFn,
+  };
+});
 vi.mock("../auth/authMiddleware", () => {
-  return { authMiddleware: vi.fn().mockReturnValue({ userId: "mockUserId" }) }
-})
+  return {
+    authMiddleware: vi.fn().mockReturnValue({
+      userId: "mock-user-id",
+    }),
+  };
+});
+vi.mock("@/server/db");
+
+const mockTodoId = new mongoose.Types.ObjectId().toString();
 
 it("rejects invalid objectId", async () => {
-  let res = deleteTodo({ data: "not-a-valid-object-id" })
+  const res = deleteTodo({
+    data: "not-a-valid-object-id",
+  });
 
-  await expect(res).rejects.toThrow()
-})
+  await expect(res).rejects.toThrow();
+});
 
 it("throws if not found", async () => {
-  vi.mocked(db.Todo.findById).mockResolvedValueOnce(null)
+  vi.mocked(db.Todo.findById).mockResolvedValueOnce(null);
 
-  let res = deleteTodo({ data: mockTodoId })
+  const res = deleteTodo({
+    data: mockTodoId,
+  });
 
-  await expect(res).rejects.toThrow("Not found")
-})
+  await expect(res).rejects.toThrow("Not found");
+});
 
 it("throws if userId does not match", async () => {
   vi.mocked(db.Todo.findById).mockResolvedValueOnce({
-    userId: "not-the-matching-user-id",
-  })
+    userId: {
+      toString: () => "not-the-matching-user-id",
+    },
+  });
 
-  let res = deleteTodo({ data: mockTodoId })
+  const res = deleteTodo({
+    data: mockTodoId,
+  });
 
-  await expect(res).rejects.toThrow("Not authorized")
-})
+  await expect(res).rejects.toThrow("Not authorized");
+});
 
 it("deletes todo and returns ID", async () => {
-  let deleteOneSpy = vi.fn()
+  const deleteOneSpy = vi.fn();
 
   vi.mocked(db.Todo.findById).mockResolvedValueOnce({
     deleteOne: deleteOneSpy,
-    userId: "mockUserId",
-  })
+    userId: {
+      toString: () => "mock-user-id",
+    },
+  });
 
-  let res = await deleteTodo({ data: mockTodoId })
+  const res = await deleteTodo({
+    data: mockTodoId,
+  });
 
-  expect(res).toBe(mockTodoId)
-  expect(deleteOneSpy).toHaveBeenCalledOnce()
-})
+  expect(res).toBe(mockTodoId);
+  expect(deleteOneSpy).toHaveBeenCalledOnce();
+});

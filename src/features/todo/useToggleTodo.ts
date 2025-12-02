@@ -1,21 +1,31 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { toggleTodo } from "./toggleTodo"
-import { useTodos } from "./useTodos"
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toggleTodo } from "./toggleTodo";
+import type { useTodos } from "./useTodos";
 
-export function useToggleTodo(id: string) {
-  let queryClient = useQueryClient()
+export function useToggleTodo(todoId: string) {
+  const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => toggleTodo({ data: id }),
+    mutationFn() {
+      return toggleTodo({
+        data: todoId,
+      });
+    },
+
     onSuccess({ checked, id }) {
       queryClient.setQueryData(
         ["todos"],
         (oldTodos: ReturnType<typeof useTodos>["data"]) => {
-          return oldTodos.map<(typeof oldTodos)[number]>(todo =>
-            todo.id == id ? { ...todo, checked } : todo,
-          )
+          return oldTodos.map<(typeof oldTodos)[number]>((todo) =>
+            todo.id === id
+              ? {
+                  ...todo,
+                  checked,
+                }
+              : todo,
+          );
         },
-      )
+      );
     },
-  })
+  });
 }

@@ -1,14 +1,14 @@
-import { cn } from "~/lib/utils"
+import { cn } from "@/lib/utils";
 
-interface CheckboxProps
+interface Props
   extends Omit<
     React.ComponentProps<"input">,
     "aria-checked" | "checked" | "onChange" | "type"
   > {
-  checked: boolean
-  label: string
-  loading?: boolean
-  onChange: () => void
+  checked: boolean;
+  label: string;
+  loading?: boolean;
+  onChange: () => void;
 }
 
 export function Checkbox({
@@ -19,7 +19,7 @@ export function Checkbox({
   loading,
   onChange,
   ...props
-}: CheckboxProps) {
+}: Props) {
   return (
     <label
       className={cn(
@@ -38,5 +38,5 @@ export function Checkbox({
       />
       {label}
     </label>
-  )
+  );
 }

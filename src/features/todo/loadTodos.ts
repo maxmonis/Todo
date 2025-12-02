@@ -1,15 +1,21 @@
-import { createServerFn } from "@tanstack/react-start"
-import { db } from "~/server/db"
-import { authMiddleware } from "../auth/authMiddleware"
+import { createServerFn } from "@tanstack/react-start";
+import { authMiddleware } from "../auth/authMiddleware";
+import { db } from "@/server/db";
 
-export let loadTodos = createServerFn()
+export const loadTodos = createServerFn()
   .middleware([authMiddleware])
   .handler(async ({ context: { userId } }) => {
-    let docs = await db.Todo.find({ userId }).lean()
+    const docs = await db.Todo.find({
+      userId,
+    }).lean();
 
-    let todos = docs.map(({ _id, checked = false, text }) => {
-      return { checked, id: _id.toString(), text }
-    })
+    const todos = docs.map(({ _id, checked = false, text }) => {
+      return {
+        checked,
+        id: _id.toString(),
+        text,
+      };
+    });
 
-    return todos
-  })
+    return todos;
+  });

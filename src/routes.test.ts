@@ -1,15 +1,27 @@
-import { expect, it } from "vitest"
-import stylesheet from "~/styles.css?url"
-import { Route as RootRoute } from "./routes/__root"
+import { expect, it } from "vitest";
+import { Route as RootRoute } from "./routes/__root";
+import stylesheet from "@/styles.css?url";
 
 it("__root sets the correct head metadata", () => {
-  let options: any = RootRoute.options
-  let head = options.head()
+  const options: any = RootRoute.options;
+  const head = options.head();
 
-  expect(head.links).toEqual([{ href: stylesheet, rel: "stylesheet" }])
+  expect(head.links).toEqual([
+    {
+      href: stylesheet,
+      rel: "stylesheet",
+    },
+  ]);
   expect(head.meta).toEqual([
-    { charSet: "utf-8" },
-    { content: "initial-scale=1, width=device-width", name: "viewport" },
-    { title: "Todo" },
-  ])
-})
+    {
+      charSet: "utf-8",
+    },
+    {
+      content: "initial-scale=1, width=device-width",
+      name: "viewport",
+    },
+    {
+      title: "Todo",
+    },
+  ]);
+});

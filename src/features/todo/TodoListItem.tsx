@@ -1,28 +1,40 @@
-import { motion } from "framer-motion"
-import { Checkbox } from "~/components/ui/Checkbox"
-import { cn } from "~/lib/utils"
-import { useDeleteTodo } from "./useDeleteTodo"
-import { useTodos } from "./useTodos"
-import { useToggleTodo } from "./useToggleTodo"
+import { motion } from "framer-motion";
+import { useDeleteTodo } from "./useDeleteTodo";
+import { useToggleTodo } from "./useToggleTodo";
+import type { useTodos } from "./useTodos";
+import { cn } from "@/lib/utils";
+import { Checkbox } from "@/components/ui/Checkbox";
 
-export function TodoListItem({
-  todo: { checked, id, text },
-}: {
-  todo: ReturnType<typeof useTodos>["data"][number]
-}) {
-  let { isPending: deleting, mutate: deleteTodo } = useDeleteTodo(id)
-  let { isPending: toggling, mutate: toggleTodo } = useToggleTodo(id)
+interface Props {
+  todo: ReturnType<typeof useTodos>["data"][number];
+}
 
-  let mutating = deleting || toggling
+export function TodoListItem({ todo: { checked, id, text } }: Props) {
+  const { isPending: deleting, mutate: deleteTodo } = useDeleteTodo(id);
+  const { isPending: toggling, mutate: toggleTodo } = useToggleTodo(id);
+
+  const mutating = deleting || toggling;
 
   return (
     <motion.li
-      animate={{ opacity: 1, y: 0 }}
+      animate={{
+        opacity: 1,
+        y: 0,
+      }}
       className="flex justify-between gap-5 rounded-lg border border-white/20 bg-white/10 px-5 py-3 shadow-md backdrop-blur-sm"
-      exit={{ opacity: 0, y: 20 }}
-      initial={{ opacity: 0, y: -20 }}
+      exit={{
+        opacity: 0,
+        y: 20,
+      }}
+      initial={{
+        opacity: 0,
+        y: -20,
+      }}
       layout
-      transition={{ duration: 0.2, ease: "easeOut" }}
+      transition={{
+        duration: 0.2,
+        ease: "easeOut",
+      }}
     >
       <Checkbox
         checked={checked}
@@ -30,18 +42,18 @@ export function TodoListItem({
         label={text}
         loading={mutating}
         onChange={() => {
-          toggleTodo()
+          toggleTodo();
         }}
       />
       <button
         className="text-red-500"
         disabled={mutating}
         onClick={() => {
-          deleteTodo()
+          deleteTodo();
         }}
       >
         Delete
       </button>
     </motion.li>
-  )
+  );
 }

@@ -1,13 +1,15 @@
-import { render } from "@testing-library/react"
-import { it, vi } from "vitest"
-import { ShellComponent } from "./ShellComponent"
+import { render } from "@testing-library/react";
+import { it, vi } from "vitest";
+import { ShellComponent } from "./ShellComponent";
 
-vi.mock("@tanstack/react-router")
+vi.mock("@tanstack/react-router");
 
 it("renders", () => {
-  let errorSpy = vi.spyOn(console, "error").mockImplementationOnce(() => {})
+  const errorSpy = vi.spyOn(console, "error");
 
-  render(<ShellComponent />)
+  errorSpy.mockImplementationOnce(() => {});
 
-  errorSpy.mockClear()
-})
+  render(<ShellComponent />);
+
+  errorSpy.mockClear();
+});

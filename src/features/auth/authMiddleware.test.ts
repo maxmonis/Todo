@@ -1,76 +1,98 @@
-import mongoose from "mongoose"
-import { expect, it, vi } from "vitest"
-import { authMiddleware } from "./authMiddleware"
-import { useAuthSession } from "./useAuthSession"
-
-let mockUserId = new mongoose.Types.ObjectId().toString()
+import mongoose from "mongoose";
+import { expect, it, vi } from "vitest";
+import { authMiddleware } from "./authMiddleware";
+import { useAuthSession } from "./useAuthSession";
 
 vi.mock("@tanstack/react-start", () => {
   return {
     createMiddleware: vi.fn(() => {
-      return { server: vi.fn((handler: Function) => handler) }
+      return {
+        server: vi.fn((handler: () => void) => handler),
+      };
     }),
-  }
-})
+  };
+});
+vi.mock("./useAuthSession");
 
-vi.mock("./useAuthSession")
+const mockUserId = new mongoose.Types.ObjectId().toString();
 
 it("calls next if session valid", async () => {
-  let nextSpy = vi.fn()
+  const nextSpy = vi.fn();
 
   vi.mocked(useAuthSession).mockResolvedValueOnce({
     clear: vi.fn(),
-    data: { email: "valid@email.mock", userId: mockUserId },
+    data: {
+      email: "valid@email.mock",
+      userId: mockUserId,
+    },
     id: undefined,
     update: vi.fn(),
-  })
+  });
 
   // @ts-expect-error
-  await authMiddleware({ next: nextSpy })
+  await authMiddleware({
+    next: nextSpy,
+  });
 
   expect(nextSpy).toHaveBeenCalledExactlyOnceWith({
-    context: { email: "valid@email.mock", userId: mockUserId },
-  })
-})
+    context: {
+      email: "valid@email.mock",
+      userId: mockUserId,
+    },
+  });
+});
 
 it("throws if email missing", async () => {
   vi.mocked(useAuthSession).mockResolvedValueOnce({
     clear: vi.fn(),
-    data: { userId: mockUserId },
+    data: {
+      userId: mockUserId,
+    },
     id: undefined,
     update: vi.fn(),
-  })
+  });
 
   // @ts-expect-error
-  let res = authMiddleware({ next: vi.fn() })
+  const res = authMiddleware({
+    next: vi.fn(),
+  });
 
-  await expect(res).rejects.toThrowError("Not authorized")
-})
+  await expect(res).rejects.toThrowError("Not authorized");
+});
 
 it("throws if user ID missing", async () => {
   vi.mocked(useAuthSession).mockResolvedValueOnce({
     clear: vi.fn(),
-    data: { email: "valid@email.mock" },
+    data: {
+      email: "valid@email.mock",
+    },
     id: undefined,
     update: vi.fn(),
-  })
+  });
 
   // @ts-expect-error
-  let res = authMiddleware({ next: vi.fn() })
+  const res = authMiddleware({
+    next: vi.fn(),
+  });
 
-  await expect(res).rejects.toThrowError("Not authorized")
-})
+  await expect(res).rejects.toThrowError("Not authorized");
+});
 
 it("throws if user ID invalid", async () => {
   vi.mocked(useAuthSession).mockResolvedValueOnce({
     clear: vi.fn(),
-    data: { email: "valid@email.mock", userId: "not-a-valid-object-id" },
+    data: {
+      email: "valid@email.mock",
+      userId: "not-a-valid-object-id",
+    },
     id: undefined,
     update: vi.fn(),
-  })
+  });
 
   // @ts-expect-error
-  let res = authMiddleware({ next: vi.fn() })
+  const res = authMiddleware({
+    next: vi.fn(),
+  });
 
-  await expect(res).rejects.toThrowError("Not authorized")
-})
+  await expect(res).rejects.toThrowError("Not authorized");
+});

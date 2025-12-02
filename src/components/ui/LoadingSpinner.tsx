@@ -1,14 +1,11 @@
-import { cn } from "~/lib/utils"
+import { cn } from "@/lib/utils";
 
-interface LoadingSpinnerProps {
-  className?: string
-  hideLoadingText?: boolean
+interface Props {
+  className?: string;
+  hideLoadingText?: boolean;
 }
 
-export function LoadingSpinner({
-  className,
-  hideLoadingText,
-}: LoadingSpinnerProps) {
+export function LoadingSpinner({ className, hideLoadingText }: Props) {
   return (
     <div
       aria-live="polite"
@@ -39,5 +36,5 @@ export function LoadingSpinner({
         <span className="hidden motion-reduce:block">Loading...</span>
       )}
     </div>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-import { HeadContent, Scripts } from "@tanstack/react-router"
+import { HeadContent, Scripts } from "@tanstack/react-router";
 
 export function ShellComponent({ children }: React.PropsWithChildren) {
   return (
@@ -17,5 +17,5 @@ export function ShellComponent({ children }: React.PropsWithChildren) {
         <Scripts />
       </body>
     </html>
-  )
+  );
 }

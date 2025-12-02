@@ -1,28 +1,44 @@
-import { expect, it, vi } from "vitest"
-import { db } from "~/server/db"
-import { mockCreateServerFn } from "~/test/mocks/mockCreateServerFn"
-import { addTodo } from "./addTodo"
+import { expect, it, vi } from "vitest";
+import { addTodo } from "./addTodo";
+import { db } from "@/server/db";
 
-vi.mock("@tanstack/react-start", () => {
-  return { createServerFn: mockCreateServerFn }
-})
+vi.mock("@tanstack/react-start", async () => {
+  const { mockCreateServerFn } = await import(
+    "@/test/mocks/mockCreateServerFn"
+  );
 
-vi.mock("~/server/db")
-
+  return {
+    createServerFn: mockCreateServerFn,
+  };
+});
 vi.mock("../auth/authMiddleware", () => {
   return {
-    authMiddleware: vi
-      .fn()
-      .mockReturnValue({ context: { userId: "mockUserId" } }),
-  }
-})
+    authMiddleware: vi.fn().mockReturnValue({
+      context: {
+        userId: "mock-user-id",
+      },
+    }),
+  };
+});
+vi.mock("@/server/db");
 
 it("saves the new todo and returns it", async () => {
   vi.mocked(db.Todo.create).mockImplementationOnce((args: any) => {
-    return Promise.resolve({ ...args, _id: "mockTodoId" })
-  })
+    return Promise.resolve({
+      ...args,
+      _id: {
+        toString: () => "mock-todo-id",
+      },
+    });
+  });
 
-  let res = await addTodo({ data: "Fix faucet" })
+  const res = await addTodo({
+    data: "Fix faucet",
+  });
 
-  expect(res).toEqual({ checked: false, id: "mockTodoId", text: "Fix faucet" })
-})
+  expect(res).toEqual({
+    checked: false,
+    id: "mock-todo-id",
+    text: "Fix faucet",
+  });
+});

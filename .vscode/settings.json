@@ -1,7 +1,16 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always"
+  },
   "editor.formatOnSave": true,
-  "files.associations": { "*.css": "tailwindcss" },
+  "editor.linkedEditing": true,
+  "editor.wordWrap": "on",
+  "eslint.lintTask.enable": false,
+  "eslint.run": "onSave",
+  "eslint.useFlatConfig": true,
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
   "files.readonlyInclude": {
     "**/routeTree.gen.ts": true
   },

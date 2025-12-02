@@ -1,25 +1,34 @@
-import { createServerFn } from "@tanstack/react-start"
-import { isValidObjectId } from "mongoose"
-import { db } from "~/server/db"
-import { useAuthSession } from "./useAuthSession"
+import { createServerFn } from "@tanstack/react-start";
+import { isValidObjectId } from "mongoose";
+import { useAuthSession } from "./useAuthSession";
+import { db } from "@/server/db";
 
-export let loadUser = createServerFn().handler(async () => {
-  let session = await useAuthSession()
-  let { userId } = session.data
+export const loadUser = createServerFn().handler(async () => {
+  const session = await useAuthSession();
+  const { userId } = session.data;
 
-  if (!userId) return null
+  if (!userId) {
+    return null;
+  }
+
   if (!isValidObjectId(userId)) {
-    await session.clear()
-    return null
+    await session.clear();
+    return null;
   }
 
-  let doc = await db.User.findById(userId)
+  const doc = await db.User.findById(userId);
   if (!doc) {
-    await session.clear()
-    return null
+    await session.clear();
+    return null;
   }
 
-  let { email } = doc
-  await session.update({ email, userId })
-  return { email }
-})
+  const { email } = doc;
+  await session.update({
+    email,
+    userId,
+  });
+
+  return {
+    email,
+  };
+});

@@ -1,20 +1,30 @@
-import { createServerFn } from "@tanstack/react-start"
-import { isValidObjectId } from "mongoose"
-import { z } from "zod"
-import { db } from "~/server/db"
-import { authMiddleware } from "../auth/authMiddleware"
+import { createServerFn } from "@tanstack/react-start";
+import { isValidObjectId } from "mongoose";
+import { z } from "zod";
+import { authMiddleware } from "../auth/authMiddleware";
+import { db } from "@/server/db";
 
-export let toggleTodo = createServerFn({ method: "POST" })
+export const toggleTodo = createServerFn({
+  method: "POST",
+})
   .middleware([authMiddleware])
-  .inputValidator(z.string().refine(id => isValidObjectId(id)))
+  .inputValidator(z.string().refine((id) => isValidObjectId(id)))
   .handler(async ({ context: { userId }, data: id }) => {
-    let doc = await db.Todo.findById(id)
+    const doc = await db.Todo.findById(id);
 
-    if (!doc) throw Error("Not found")
-    if (doc.userId.toString() != userId) throw Error("Not authorized")
+    if (!doc) {
+      throw Error("Not found");
+    }
 
-    doc.checked = !doc.checked
-    await doc.save()
+    if (doc.userId.toString() !== userId) {
+      throw Error("Not authorized");
+    }
 
-    return { checked: doc.checked, id }
-  })
+    doc.checked = !doc.checked;
+    await doc.save();
+
+    return {
+      checked: doc.checked,
+      id,
+    };
+  });

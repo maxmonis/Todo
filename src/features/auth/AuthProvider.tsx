@@ -1,21 +1,21 @@
-import { useEffect, useState } from "react"
-import { AuthContext } from "./AuthContext"
-import { clearSession } from "./clearSession"
-import { loadUser } from "./loadUser"
+import { useEffect, useState } from "react";
+import { AuthContext } from "./AuthContext";
+import { clearSession } from "./clearSession";
+import { loadUser } from "./loadUser";
 
 export function AuthProvider({ children }: React.PropsWithChildren) {
-  let [loading, setLoading] = useState(true)
-  let [user, setUser] =
-    useState<NonNullable<React.ContextType<typeof AuthContext>>["user"]>(null)
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] =
+    useState<NonNullable<React.ContextType<typeof AuthContext>>["user"]>(null);
 
   useEffect(() => {
-    init()
-  }, [])
+    init();
+  }, []);
 
   async function init() {
-    let res = await loadUser()
-    setLoading(false)
-    setUser(res)
+    const res = await loadUser();
+    setLoading(false);
+    setUser(res);
   }
 
   return (
@@ -23,13 +23,13 @@ export function AuthProvider({ children }: React.PropsWithChildren) {
       value={{
         loading,
         logout: () => {
-          clearSession()
-          setUser(null)
+          clearSession();
+          setUser(null);
         },
         user,
       }}
     >
       {children}
     </AuthContext.Provider>
-  )
+  );
 }

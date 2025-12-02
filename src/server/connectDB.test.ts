@@ -1,48 +1,58 @@
-import mongoose from "mongoose"
-import { expect, it, vi } from "vitest"
-import { connectDB } from "./connectDB"
+import mongoose from "mongoose";
+import { expect, it, vi } from "vitest";
+import { connectDB } from "./connectDB";
 
-vi.mock("mongoose")
+vi.mock("mongoose");
 
 it("does not connect in test mode", async () => {
-  await connectDB()
+  await connectDB();
 
-  expect(mongoose.connect).not.toHaveBeenCalled()
-})
+  expect(mongoose.connect).not.toHaveBeenCalled();
+});
 
 it("connects when mode is not test", async () => {
-  let logSpy = vi.spyOn(console, "log").mockImplementationOnce(() => {})
+  import.meta.env.MODE = "development";
 
-  import.meta.env.MODE = "development"
+  const logSpy = vi.spyOn(console, "log");
 
-  await connectDB()
+  logSpy.mockImplementationOnce(() => {});
 
-  expect(mongoose.connect).toHaveBeenCalledOnce()
-  expect(logSpy).toHaveBeenCalledExactlyOnceWith("MongoDB connected")
+  await connectDB();
 
-  logSpy.mockRestore()
-  import.meta.env.MODE = "test"
-})
+  expect(mongoose.connect).toHaveBeenCalledOnce();
+  expect(logSpy).toHaveBeenCalledExactlyOnceWith("MongoDB connected");
+
+  logSpy.mockRestore();
+
+  import.meta.env.MODE = "test";
+});
 
 it("exits process if connection fails", async () => {
-  let errorSpy = vi.spyOn(console, "error").mockImplementationOnce(() => {})
-  let exitSpy = vi.spyOn(process, "exit").mockImplementationOnce(() => {
-    throw Error("process.exit called")
-  })
+  import.meta.env.MODE = "production";
 
-  import.meta.env.MODE = "production"
-  vi.mocked(mongoose.connect).mockRejectedValueOnce(Error("Mock error message"))
+  const errorSpy = vi.spyOn(console, "error");
+  const exitSpy = vi.spyOn(process, "exit");
 
-  let res = connectDB()
+  errorSpy.mockImplementationOnce(() => {});
+  exitSpy.mockImplementationOnce(() => {
+    throw Error("process.exit called");
+  });
 
-  await expect(res).rejects.toThrow("process.exit called")
+  vi.mocked(mongoose.connect).mockRejectedValueOnce(
+    Error("Mock error message"),
+  );
+
+  const res = connectDB();
+
+  await expect(res).rejects.toThrow("process.exit called");
   expect(errorSpy).toHaveBeenCalledExactlyOnceWith(
     "Failed to connect to MongoDB:",
     Error("Mock error message"),
-  )
-  expect(exitSpy).toHaveBeenCalledExactlyOnceWith(1)
+  );
+  expect(exitSpy).toHaveBeenCalledExactlyOnceWith(1);
 
-  errorSpy.mockRestore()
-  exitSpy.mockRestore()
-  import.meta.env.MODE = "test"
-})
+  errorSpy.mockRestore();
+  exitSpy.mockRestore();
+
+  import.meta.env.MODE = "test";
+});

@@ -1,8 +1,12 @@
-import viteTsConfigPaths from "vite-tsconfig-paths"
-import { defineConfig } from "vitest/config"
+import viteTsConfigPaths from "vite-tsconfig-paths";
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
-  plugins: [viteTsConfigPaths({ projects: ["./tsconfig.json"] })],
+  plugins: [
+    viteTsConfigPaths({
+      projects: ["./tsconfig.json"],
+    }),
+  ],
   test: {
     coverage: {
       exclude: ["./src/{routeTree.gen.ts,test}"],
@@ -12,7 +16,9 @@ export default defineConfig({
     dir: "./src",
     environment: "jsdom",
     globals: true,
-    sequence: { shuffle: true },
+    sequence: {
+      shuffle: true,
+    },
     setupFiles: "./src/test/setup.ts",
   },
-})
+});

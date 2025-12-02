@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router"
+import type { Link } from "@tanstack/react-router";
 
 export function MockLink({
   children,
@@ -9,23 +9,27 @@ export function MockLink({
   return (
     <a
       href={to}
-      onClick={e => {
-        e.preventDefault()
-        return onClick?.(e)
+      onClick={(e) => {
+        e.preventDefault();
+
+        return onClick?.(e);
       }}
       {...Object.entries(props).reduce<Record<string, string>>(
         (acc, [key, value]) => {
-          acc[
-            ["className", "onClick", "tabIndex"].includes(key)
-              ? key
-              : key.toLowerCase()
-          ] = typeof value == "boolean" ? `${value}` : value
-          return acc
+          const newKey = ["className", "onClick", "tabIndex"].includes(key)
+            ? key
+            : key.toLowerCase();
+
+          const newValue = typeof value === "boolean" ? `${value}` : value;
+
+          acc[newKey] = newValue;
+
+          return acc;
         },
         {},
       )}
     >
       {children}
     </a>
-  )
+  );
 }

@@ -1,19 +1,24 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { deleteTodo } from "./deleteTodo"
-import { useTodos } from "./useTodos"
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteTodo } from "./deleteTodo";
+import type { useTodos } from "./useTodos";
 
-export function useDeleteTodo(id: string) {
-  let queryClient = useQueryClient()
+export function useDeleteTodo(todoId: string) {
+  const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => deleteTodo({ data: id }),
+    mutationFn() {
+      return deleteTodo({
+        data: todoId,
+      });
+    },
+
     onSuccess(id) {
       queryClient.setQueryData(
         ["todos"],
         (oldTodos: ReturnType<typeof useTodos>["data"]) => {
-          return oldTodos.filter(t => t.id != id)
+          return oldTodos.filter((t) => t.id !== id);
         },
-      )
+      );
     },
-  })
+  });
 }

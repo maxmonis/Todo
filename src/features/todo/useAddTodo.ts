@@ -1,9 +1,9 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { addTodo } from "./addTodo"
-import { useTodos } from "./useTodos"
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { addTodo } from "./addTodo";
+import type { useTodos } from "./useTodos";
 
 export function useAddTodo() {
-  let queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: addTodo,
@@ -11,11 +11,11 @@ export function useAddTodo() {
       queryClient.setQueryData(
         ["todos"],
         (oldTodos: ReturnType<typeof useTodos>["data"]) => {
-          let newTodos = [...oldTodos]
-          newTodos.push(todo)
-          return newTodos
+          const newTodos = [...oldTodos];
+          newTodos.push(todo);
+          return newTodos;
         },
-      )
+      );
     },
-  })
+  });
 }
