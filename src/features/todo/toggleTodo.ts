@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { isValidObjectId } from "mongoose";
 import { z } from "zod";
 import { authMiddleware } from "../auth/authMiddleware";
-import { db } from "@/server/db";
+import { db } from "@/mongo/db";
 
 export const toggleTodo = createServerFn({
   method: "POST",

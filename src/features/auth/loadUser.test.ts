@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { expect, it, vi } from "vitest";
 import { loadUser } from "./loadUser";
 import { useAuthSession } from "./useAuthSession";
-import { db } from "@/server/db";
+import { db } from "@/mongo/db";
 
 vi.mock("@tanstack/react-start", async () => {
   const { mockCreateServerFn } = await import(
@@ -14,7 +14,7 @@ vi.mock("@tanstack/react-start", async () => {
   };
 });
 vi.mock("./useAuthSession");
-vi.mock("@/server/db");
+vi.mock("@/mongo/db");
 
 const mockUserId = new mongoose.Types.ObjectId().toString();
 

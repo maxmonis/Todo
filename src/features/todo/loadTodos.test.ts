@@ -1,6 +1,6 @@
 import { expect, it, vi } from "vitest";
 import { loadTodos } from "./loadTodos";
-import { db } from "@/server/db";
+import { db } from "@/mongo/db";
 
 vi.mock("@tanstack/react-start", async () => {
   const { mockCreateServerFn } = await import(
@@ -20,7 +20,7 @@ vi.mock("../auth/authMiddleware", () => {
     }),
   };
 });
-vi.mock("@/server/db");
+vi.mock("@/mongo/db");
 
 it("returns todos from DB", async () => {
   vi.mocked(db.Todo.find).mockReturnValueOnce({

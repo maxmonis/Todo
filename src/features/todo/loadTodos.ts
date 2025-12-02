@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { authMiddleware } from "../auth/authMiddleware";
-import { db } from "@/server/db";
+import { db } from "@/mongo/db";
 
 export const loadTodos = createServerFn()
   .middleware([authMiddleware])

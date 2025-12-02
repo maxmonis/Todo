@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { expect, it, vi } from "vitest";
 import { deleteTodo } from "./deleteTodo";
-import { db } from "@/server/db";
+import { db } from "@/mongo/db";
 
 vi.mock("@tanstack/react-start", async () => {
   const { mockCreateServerFn } = await import(
@@ -19,7 +19,7 @@ vi.mock("../auth/authMiddleware", () => {
     }),
   };
 });
-vi.mock("@/server/db");
+vi.mock("@/mongo/db");
 
 const mockTodoId = new mongoose.Types.ObjectId().toString();
 

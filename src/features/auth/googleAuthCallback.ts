@@ -1,6 +1,6 @@
 import { redirect } from "@tanstack/react-router";
 import { useAuthSession } from "./useAuthSession";
-import { db } from "@/server/db";
+import { db } from "@/mongo/db";
 
 export async function googleAuthCallback({ request }: { request: Request }) {
   const code = new URL(request.url).searchParams.get("code");

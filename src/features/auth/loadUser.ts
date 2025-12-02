@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { isValidObjectId } from "mongoose";
 import { useAuthSession } from "./useAuthSession";
-import { db } from "@/server/db";
+import { db } from "@/mongo/db";
 
 export const loadUser = createServerFn().handler(async () => {
   const session = await useAuthSession();

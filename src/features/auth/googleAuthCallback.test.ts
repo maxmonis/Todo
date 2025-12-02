@@ -2,11 +2,11 @@ import { redirect } from "@tanstack/react-router";
 import { expect, it, vi } from "vitest";
 import { googleAuthCallback } from "./googleAuthCallback";
 import { useAuthSession } from "./useAuthSession";
-import { db } from "@/server/db";
+import { db } from "@/mongo/db";
 
 vi.mock("@tanstack/react-router");
 vi.mock("./useAuthSession");
-vi.mock("@/server/db");
+vi.mock("@/mongo/db");
 
 it("throws redirect if no code", async () => {
   vi.mocked(redirect).mockImplementationOnce(vi.fn((args) => args));
