@@ -8,7 +8,7 @@ it("returns context", () => {
     loading: false,
     logout: vi.fn(),
     user: {
-      email: "valid@email.mock",
+      email: "mock@email.test",
     },
   };
 

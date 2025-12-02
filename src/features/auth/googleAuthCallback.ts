@@ -47,11 +47,13 @@ export async function googleAuthCallback({ request }: { request: Request }) {
   });
 
   if (doc) {
+    // there's an existing user with this email
     await session.update({
       email: doc.email,
       userId: doc._id.toString(),
     });
   } else {
+    // there's no existing user so create a new one
     const newDoc = await db.User.create({
       email,
     });

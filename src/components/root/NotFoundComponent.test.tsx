@@ -4,7 +4,6 @@ import { NotFoundComponent } from "./NotFoundComponent";
 
 vi.mock("@tanstack/react-router", async () => {
   const { MockLink } = await import("@/test/mocks/MockLink");
-
   return {
     Link: MockLink,
   };

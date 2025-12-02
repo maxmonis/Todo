@@ -16,6 +16,7 @@ vi.mock("./useDeleteTodo", () => {
     }),
   };
 });
+
 vi.mock("./useTodos", () => {
   return {
     useTodos: vi.fn().mockReturnValue({
@@ -34,6 +35,7 @@ vi.mock("./useTodos", () => {
     }),
   };
 });
+
 vi.mock("./useToggleTodo", () => {
   return {
     useToggleTodo: vi.fn().mockReturnValue({

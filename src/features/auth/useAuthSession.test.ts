@@ -10,12 +10,11 @@ vi.mock("@tanstack/react-start/server", () => {
 
 it("returns the result of useSession", () => {
   const mockSession = {
-    email: "valid@email.mock",
+    email: "mock@email.test",
     userId: "mock-user-id",
   };
 
-  // @ts-expect-error
-  useSession.mockReturnValueOnce(mockSession);
+  vi.mocked(useSession).mockReturnValueOnce(mockSession as any);
 
   const res = useAuthSession();
 

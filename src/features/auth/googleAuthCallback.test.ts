@@ -5,7 +5,9 @@ import { useAuthSession } from "./useAuthSession";
 import { db } from "@/mongo/db";
 
 vi.mock("@tanstack/react-router");
+
 vi.mock("./useAuthSession");
+
 vi.mock("@/mongo/db");
 
 it("throws redirect if no code", async () => {
@@ -40,7 +42,7 @@ it("exchanges code, creates session, and redirects", async () => {
       Promise.resolve({
         json: () =>
           Promise.resolve({
-            email: "valid@email.mock",
+            email: "mock@email.test",
           }),
       } as any),
     );
@@ -50,7 +52,7 @@ it("exchanges code, creates session, and redirects", async () => {
     _id: {
       toString: () => "mock-user-id",
     },
-    email: "valid@email.mock",
+    email: "mock@email.test",
   } as any);
 
   vi.mocked(useAuthSession).mockResolvedValueOnce({
@@ -69,13 +71,13 @@ it("exchanges code, creates session, and redirects", async () => {
 
   expect(fetchSpy).toHaveBeenCalledTimes(2);
   expect(db.User.findOne).toHaveBeenCalledExactlyOnceWith({
-    email: "valid@email.mock",
+    email: "mock@email.test",
   });
   expect(db.User.create).toHaveBeenCalledExactlyOnceWith({
-    email: "valid@email.mock",
+    email: "mock@email.test",
   });
   expect(updateSpy).toHaveBeenCalledExactlyOnceWith({
-    email: "valid@email.mock",
+    email: "mock@email.test",
     userId: "mock-user-id",
   });
   expect(redirect).toHaveBeenCalledExactlyOnceWith({
@@ -99,7 +101,7 @@ it("uses existing user if found", async () => {
       Promise.resolve({
         json: () =>
           Promise.resolve({
-            email: "valid@email.mock",
+            email: "mock@email.test",
           }),
       } as any),
     );
@@ -108,7 +110,7 @@ it("uses existing user if found", async () => {
     _id: {
       toString: () => "mock-user-id",
     },
-    email: "valid@email.mock",
+    email: "mock@email.test",
   });
   vi.mocked(useAuthSession).mockResolvedValueOnce({
     update: updateSpy,
@@ -123,7 +125,7 @@ it("uses existing user if found", async () => {
 
   expect(db.User.create).not.toHaveBeenCalled();
   expect(updateSpy).toHaveBeenCalledExactlyOnceWith({
-    email: "valid@email.mock",
+    email: "mock@email.test",
     userId: "mock-user-id",
   });
   expect(redirect).toHaveBeenCalledExactlyOnceWith({

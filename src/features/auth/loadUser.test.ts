@@ -8,12 +8,13 @@ vi.mock("@tanstack/react-start", async () => {
   const { mockCreateServerFn } = await import(
     "@/test/mocks/mockCreateServerFn"
   );
-
   return {
     createServerFn: mockCreateServerFn,
   };
 });
+
 vi.mock("./useAuthSession");
+
 vi.mock("@/mongo/db");
 
 const mockUserId = new mongoose.Types.ObjectId().toString();
@@ -82,16 +83,16 @@ it("updates session and returns user if found", async () => {
     update: updateSpy,
   });
   vi.mocked(db.User.findById).mockResolvedValueOnce({
-    email: "valid@email.mock",
+    email: "mock@email.test",
   });
 
   const res = await loadUser();
 
   expect(res).toEqual({
-    email: "valid@email.mock",
+    email: "mock@email.test",
   });
   expect(updateSpy).toHaveBeenCalledExactlyOnceWith({
-    email: "valid@email.mock",
+    email: "mock@email.test",
     userId: mockUserId,
   });
 });

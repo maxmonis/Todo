@@ -22,8 +22,6 @@ it("connects when mode is not test", async () => {
   expect(mongoose.connect).toHaveBeenCalledOnce();
   expect(logSpy).toHaveBeenCalledExactlyOnceWith("MongoDB connected");
 
-  logSpy.mockRestore();
-
   import.meta.env.MODE = "test";
 });
 
@@ -50,9 +48,6 @@ it("exits process if connection fails", async () => {
     Error("Mock error message"),
   );
   expect(exitSpy).toHaveBeenCalledExactlyOnceWith(1);
-
-  errorSpy.mockRestore();
-  exitSpy.mockRestore();
 
   import.meta.env.MODE = "test";
 });

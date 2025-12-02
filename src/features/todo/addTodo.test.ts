@@ -6,11 +6,11 @@ vi.mock("@tanstack/react-start", async () => {
   const { mockCreateServerFn } = await import(
     "@/test/mocks/mockCreateServerFn"
   );
-
   return {
     createServerFn: mockCreateServerFn,
   };
 });
+
 vi.mock("../auth/authMiddleware", () => {
   return {
     authMiddleware: vi.fn().mockReturnValue({
@@ -20,6 +20,7 @@ vi.mock("../auth/authMiddleware", () => {
     }),
   };
 });
+
 vi.mock("@/mongo/db");
 
 it("saves the new todo and returns it", async () => {

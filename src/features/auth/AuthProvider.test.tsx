@@ -7,16 +7,17 @@ import { clearSession } from "./clearSession";
 import { loadUser } from "./loadUser";
 
 vi.mock("./clearSession");
+
 vi.mock("./loadUser");
 
 function TestComponent() {
-  const context = useContext(AuthContext)!;
+  const { loading, logout, user } = useContext(AuthContext)!;
 
   return (
     <>
-      <div>loading:{context.loading ? "true" : "false"}</div>
-      <div>user:{context.user ? context.user.email : "null"}</div>
-      <button onClick={context.logout}>Logout</button>
+      <div>loading:{loading ? "true" : "false"}</div>
+      <div>user:{user ? user.email : "null"}</div>
+      <button onClick={logout}>Logout</button>
     </>
   );
 }
@@ -43,7 +44,7 @@ it("updates loading when signed out", async () => {
 
 it("updates user and loading when logged in", async () => {
   vi.mocked(loadUser).mockResolvedValueOnce({
-    email: "valid@email.mock",
+    email: "mock@email.test",
   });
 
   render(
@@ -57,12 +58,12 @@ it("updates user and loading when logged in", async () => {
   });
 
   screen.getByText("loading:false");
-  screen.getByText("user:valid@email.mock");
+  screen.getByText("user:mock@email.test");
 });
 
 it("clears session when logout clicked", async () => {
   vi.mocked(loadUser).mockResolvedValueOnce({
-    email: "valid@email.mock",
+    email: "mock@email.test",
   });
 
   render(

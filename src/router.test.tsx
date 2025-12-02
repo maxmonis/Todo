@@ -4,16 +4,12 @@ import { getRouter } from "./router";
 
 const mocks = vi.hoisted(() => {
   return {
-    createRouter: vi.fn((opts) => ({
-      ...opts,
-      mockRouter: true,
-    })),
+    createRouter: vi.fn(),
   };
 });
 
 vi.mock("@tanstack/react-query", async () => {
   const actual = await vi.importActual("@tanstack/react-query");
-
   return {
     ...actual,
     QueryClientProvider: vi.fn(({ children }: React.PropsWithChildren) => (
@@ -21,15 +17,17 @@ vi.mock("@tanstack/react-query", async () => {
     )),
   };
 });
+
 vi.mock("@tanstack/react-router", async () => {
   const actual = await vi.importActual("@tanstack/react-router");
-
   return {
     ...actual,
     createRouter: mocks.createRouter,
   };
 });
+
 vi.mock("@tanstack/react-router-ssr-query");
+
 vi.mock("./features/auth/AuthProvider", () => {
   return {
     AuthProvider: vi.fn(({ children }: React.PropsWithChildren) => (

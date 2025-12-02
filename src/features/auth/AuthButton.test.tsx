@@ -24,7 +24,7 @@ it("renders logout button if signed in", () => {
     loading: false,
     logout: logoutSpy,
     user: {
-      email: "valid@email.mock",
+      email: "mock@email.test",
     },
   });
 

@@ -9,17 +9,21 @@ vi.mock("../auth/AuthButton", () => {
     AuthButton: () => <div>MockAuthButton</div>,
   };
 });
+
 vi.mock("../auth/useAuth");
+
 vi.mock("./TodoForm", () => {
   return {
     TodoForm: () => <div>MockTodoForm</div>,
   };
 });
+
 vi.mock("./TodoList", () => {
   return {
     TodoList: () => <div>MockTodoList</div>,
   };
 });
+
 vi.mock("./useTodos");
 
 it("renders spinner if authenticating", () => {
@@ -58,7 +62,7 @@ it("renders list and form if signed in", () => {
     loading: false,
     logout: vi.fn(),
     user: {
-      email: "valid@email.mock",
+      email: "mock@email.test",
     },
   });
   vi.mocked(useTodos).mockReturnValueOnce({
