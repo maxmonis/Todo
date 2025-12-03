@@ -1,22 +1,19 @@
-/* eslint-disable @typescript-eslint/no-unsafe-function-type */
-
 import { vi } from "vitest";
 
+interface Ctx {
+  context?: unknown;
+  data?: unknown;
+}
+
 export const mockCreateServerFn = vi.fn(() => {
-  let middlewares: Array<Function> = [];
+  let middlewares: Array<(context: unknown) => unknown> = [];
   let validator: {
-    parseAsync: Function;
+    parseAsync: (data: unknown) => unknown;
   } | null = null;
 
   return {
-    handler(cb: Function) {
-      return async ({
-        context,
-        data,
-      }: {
-        context?: unknown;
-        data?: unknown;
-      } = {}) => {
+    handler(cb: (ctx: Ctx) => unknown) {
+      return async ({ context, data }: Ctx = {}) => {
         if (validator) {
           data = await validator.parseAsync(data);
         }
