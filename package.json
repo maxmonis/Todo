@@ -40,7 +40,8 @@
   "scripts": {
     "dev": "vite dev",
     "lint": "eslint . --fix",
-    "test": "vitest"
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "type": "module"
 }

@@ -51,5 +51,5 @@ pnpm test
 Run unit tests and generate a coverage report:
 
 ```bash
-pnpm test run --coverage
+pnpm test:coverage
 ```
