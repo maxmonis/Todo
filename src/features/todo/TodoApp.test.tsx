@@ -2,7 +2,6 @@ import { render, screen } from "@testing-library/react";
 import { it, vi } from "vitest";
 import { useAuth } from "../auth/useAuth";
 import { TodoApp } from "./TodoApp";
-import { useTodos } from "./useTodos";
 
 vi.mock("../auth/AuthButton", () => {
   return {
@@ -24,17 +23,12 @@ vi.mock("./TodoList", () => {
   };
 });
 
-vi.mock("./useTodos");
-
 it("renders spinner if authenticating", () => {
   vi.mocked(useAuth).mockReturnValueOnce({
     loading: true,
     logout: vi.fn(),
     user: null,
   });
-  vi.mocked(useTodos).mockReturnValueOnce({
-    isLoading: false,
-  } as any);
 
   render(<TodoApp />);
 
@@ -47,9 +41,6 @@ it("renders auth button if logged out", () => {
     logout: vi.fn(),
     user: null,
   });
-  vi.mocked(useTodos).mockReturnValueOnce({
-    isLoading: false,
-  } as any);
 
   render(<TodoApp />);
 
@@ -65,9 +56,6 @@ it("renders list and form if signed in", () => {
       email: "mock@email.test",
     },
   });
-  vi.mocked(useTodos).mockReturnValueOnce({
-    isLoading: false,
-  } as any);
 
   render(<TodoApp />);
 

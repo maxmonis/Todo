@@ -23,12 +23,12 @@ vi.mock("./useTodos", () => {
       data: [
         {
           checked: false,
-          id: "mock-todo-id-123",
+          id: "mocktodoid123",
           text: "Wash car",
         },
         {
           checked: true,
-          id: "mock-todo-id-456",
+          id: "mocktodoid456",
           text: "Buy groceries",
         },
       ],

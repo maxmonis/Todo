@@ -7,12 +7,13 @@ export function useAddTodo() {
 
   return useMutation({
     mutationFn: addTodo,
+
     onSuccess(todo) {
       queryClient.setQueryData(
         ["todos"],
         (oldTodos: ReturnType<typeof useTodos>["data"]) => {
-          const newTodos = [...oldTodos];
-          newTodos.push(todo);
+          const newTodos: typeof oldTodos = [...oldTodos, todo];
+
           return newTodos;
         },
       );

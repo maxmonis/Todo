@@ -23,7 +23,7 @@ it("returns null if no session exists", async () => {
   vi.mocked(useAuthSession).mockResolvedValueOnce({
     clear: vi.fn(),
     data: {},
-    id: "mockid",
+    id: undefined,
     update: vi.fn(),
   });
 
@@ -40,7 +40,7 @@ it("clears session and returns null if user ID invalid", async () => {
     data: {
       userId: "not-a-valid-object-id",
     },
-    id: "mockid",
+    id: undefined,
     update: vi.fn(),
   });
 
@@ -59,7 +59,7 @@ it("clears session and returns null if user not found", async () => {
     data: {
       userId: mockUserId,
     },
-    id: "mockid",
+    id: undefined,
     update: vi.fn(),
   });
   vi.mocked(db.User.findById).mockResolvedValueOnce(null);
@@ -79,7 +79,7 @@ it("updates session and returns user if found", async () => {
     data: {
       userId: mockUserId,
     },
-    id: "mockid",
+    id: undefined,
     update: updateSpy,
   });
   vi.mocked(db.User.findById).mockResolvedValueOnce({

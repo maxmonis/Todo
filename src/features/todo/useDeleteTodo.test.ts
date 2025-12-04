@@ -9,24 +9,24 @@ vi.mock("./deleteTodo");
 const { queryClient, wrapper } = mockQueryClient();
 
 it("removes cached todo on success", async () => {
-  vi.mocked(deleteTodo).mockResolvedValueOnce("mock-todo-id-123");
+  vi.mocked(deleteTodo).mockResolvedValueOnce("mocktodoid123");
   queryClient.setQueryData(
     ["todos"],
     [
       {
         checked: false,
-        id: "mock-todo-id-123",
+        id: "mocktodoid123",
         text: "Wash car",
       },
       {
         checked: true,
-        id: "mock-todo-id-456",
+        id: "mocktodoid456",
         text: "Buy groceries",
       },
     ],
   );
 
-  const { result } = renderHook(() => useDeleteTodo("mock-todo-id-123"), {
+  const { result } = renderHook(() => useDeleteTodo("mocktodoid123"), {
     wrapper,
   });
 
@@ -36,7 +36,7 @@ it("removes cached todo on success", async () => {
     expect(queryClient.getQueryData(["todos"])).toEqual([
       {
         checked: true,
-        id: "mock-todo-id-456",
+        id: "mocktodoid456",
         text: "Buy groceries",
       },
     ]);

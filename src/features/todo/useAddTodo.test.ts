@@ -11,7 +11,7 @@ const { queryClient, wrapper } = mockQueryClient();
 it("adds new todo to cache on success", async () => {
   vi.mocked(addTodo).mockResolvedValueOnce({
     checked: false,
-    id: "mock-todo-id-789",
+    id: "mocktodoid789",
     text: "Fix faucet",
   });
   queryClient.setQueryData(
@@ -19,12 +19,12 @@ it("adds new todo to cache on success", async () => {
     [
       {
         checked: false,
-        id: "mock-todo-id-123",
+        id: "mocktodoid123",
         text: "Wash car",
       },
       {
         checked: true,
-        id: "mock-todo-id-456",
+        id: "mocktodoid456",
         text: "Buy groceries",
       },
     ],
@@ -42,17 +42,17 @@ it("adds new todo to cache on success", async () => {
     expect(queryClient.getQueryData(["todos"])).toEqual([
       {
         checked: false,
-        id: "mock-todo-id-123",
+        id: "mocktodoid123",
         text: "Wash car",
       },
       {
         checked: true,
-        id: "mock-todo-id-456",
+        id: "mocktodoid456",
         text: "Buy groceries",
       },
       {
         checked: false,
-        id: "mock-todo-id-789",
+        id: "mocktodoid789",
         text: "Fix faucet",
       },
     ]);

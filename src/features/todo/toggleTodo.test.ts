@@ -15,7 +15,7 @@ vi.mock("@tanstack/react-start", async () => {
 vi.mock("../auth/authMiddleware", () => {
   return {
     authMiddleware: vi.fn().mockReturnValue({
-      userId: "mock-user-id",
+      userId: "mockuserid",
     }),
   };
 });
@@ -63,7 +63,7 @@ it("toggles todo then returns ID and status", async () => {
     checked: true,
     save: saveSpy,
     userId: {
-      toString: () => "mock-user-id",
+      toString: () => "mockuserid",
     },
   });
 

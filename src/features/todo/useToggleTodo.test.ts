@@ -11,25 +11,25 @@ const { queryClient, wrapper } = mockQueryClient();
 it("toggles cached todo on success", async () => {
   vi.mocked(toggleTodo).mockResolvedValueOnce({
     checked: true,
-    id: "mock-todo-id-123",
+    id: "mocktodoid123",
   });
   queryClient.setQueryData(
     ["todos"],
     [
       {
         checked: false,
-        id: "mock-todo-id-123",
+        id: "mocktodoid123",
         text: "Wash car",
       },
       {
         checked: true,
-        id: "mock-todo-id-456",
+        id: "mocktodoid456",
         text: "Buy groceries",
       },
     ],
   );
 
-  const { result } = renderHook(() => useToggleTodo("mock-todo-id-123"), {
+  const { result } = renderHook(() => useToggleTodo("mocktodoid123"), {
     wrapper,
   });
 
@@ -39,12 +39,12 @@ it("toggles cached todo on success", async () => {
     expect(queryClient.getQueryData(["todos"])).toEqual([
       {
         checked: true,
-        id: "mock-todo-id-123",
+        id: "mocktodoid123",
         text: "Wash car",
       },
       {
         checked: true,
-        id: "mock-todo-id-456",
+        id: "mocktodoid456",
         text: "Buy groceries",
       },
     ]);

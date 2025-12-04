@@ -11,7 +11,7 @@ vi.mock("@tanstack/react-start/server", () => {
 it("returns the result of useSession", () => {
   const mockSession = {
     email: "mock@email.test",
-    userId: "mock-user-id",
+    userId: "mockuserid",
   };
 
   vi.mocked(useSession).mockReturnValueOnce(mockSession as any);

@@ -15,7 +15,7 @@ vi.mock("../auth/authMiddleware", () => {
   return {
     authMiddleware: vi.fn().mockReturnValue({
       context: {
-        userId: "mock-user-id",
+        userId: "mockuserid",
       },
     }),
   };
@@ -28,7 +28,7 @@ it("saves the new todo and returns it", async () => {
     return Promise.resolve({
       ...args,
       _id: {
-        toString: () => "mock-todo-id",
+        toString: () => "mocktodoid",
       },
     });
   });
@@ -39,7 +39,7 @@ it("saves the new todo and returns it", async () => {
 
   expect(res).toEqual({
     checked: false,
-    id: "mock-todo-id",
+    id: "mocktodoid",
     text: "Fix faucet",
   });
 });

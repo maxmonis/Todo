@@ -20,7 +20,7 @@ it("returns context", () => {
     ),
   });
 
-  expect(result.current).toBe(mockContext);
+  expect(result.current).toEqual(mockContext);
 });
 
 it("throws error when used outside provider", () => {

@@ -5,8 +5,8 @@ import { db } from "@/mongo/db";
 
 export const loadUser = createServerFn().handler(async () => {
   const session = await useAuthSession();
-  const { userId } = session.data;
 
+  const { userId } = session.data;
   if (!userId) {
     return null;
   }

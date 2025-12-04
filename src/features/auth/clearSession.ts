@@ -5,6 +5,8 @@ export const clearSession = createServerFn({
   method: "POST",
 }).handler(async () => {
   const session = await useAuthSession();
+
   await session.clear();
+
   return "Session cleared";
 });

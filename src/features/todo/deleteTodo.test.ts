@@ -15,7 +15,7 @@ vi.mock("@tanstack/react-start", async () => {
 vi.mock("../auth/authMiddleware", () => {
   return {
     authMiddleware: vi.fn().mockReturnValue({
-      userId: "mock-user-id",
+      userId: "mockuserid",
     }),
   };
 });
@@ -62,7 +62,7 @@ it("deletes todo and returns ID", async () => {
   vi.mocked(db.Todo.findById).mockResolvedValueOnce({
     deleteOne: deleteOneSpy,
     userId: {
-      toString: () => "mock-user-id",
+      toString: () => "mockuserid",
     },
   });
 

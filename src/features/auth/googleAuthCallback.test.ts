@@ -50,7 +50,7 @@ it("exchanges code, creates session, and redirects", async () => {
   vi.mocked(db.User.findOne).mockResolvedValueOnce(null);
   vi.mocked(db.User.create).mockResolvedValueOnce({
     _id: {
-      toString: () => "mock-user-id",
+      toString: () => "mockuserid",
     },
     email: "mock@email.test",
   } as any);
@@ -78,7 +78,7 @@ it("exchanges code, creates session, and redirects", async () => {
   });
   expect(updateSpy).toHaveBeenCalledExactlyOnceWith({
     email: "mock@email.test",
-    userId: "mock-user-id",
+    userId: "mockuserid",
   });
   expect(redirect).toHaveBeenCalledExactlyOnceWith({
     href: "https://base-url.mock",
@@ -108,7 +108,7 @@ it("uses existing user if found", async () => {
 
   vi.mocked(db.User.findOne).mockResolvedValueOnce({
     _id: {
-      toString: () => "mock-user-id",
+      toString: () => "mockuserid",
     },
     email: "mock@email.test",
   });
@@ -126,7 +126,7 @@ it("uses existing user if found", async () => {
   expect(db.User.create).not.toHaveBeenCalled();
   expect(updateSpy).toHaveBeenCalledExactlyOnceWith({
     email: "mock@email.test",
-    userId: "mock-user-id",
+    userId: "mockuserid",
   });
   expect(redirect).toHaveBeenCalledExactlyOnceWith({
     href: "https://base-url.mock",
