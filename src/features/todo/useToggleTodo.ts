@@ -13,10 +13,10 @@ export function useToggleTodo(todoId: string) {
     },
 
     onSuccess({ checked, id }) {
-      queryClient.setQueryData(
+      queryClient.setQueryData<ReturnType<typeof useTodos>["data"]>(
         ["todos"],
-        (oldTodos: ReturnType<typeof useTodos>["data"]) => {
-          return oldTodos.map<(typeof oldTodos)[number]>((todo) =>
+        (oldTodos) => {
+          return oldTodos?.map((todo) =>
             todo.id === id
               ? {
                   ...todo,

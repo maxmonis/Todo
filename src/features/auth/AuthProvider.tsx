@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { AuthContext } from "./AuthContext";
 import { clearSession } from "./clearSession";
 import { loadUser } from "./loadUser";
 
 export function AuthProvider({ children }: React.PropsWithChildren) {
+  const queryClient = useQueryClient();
+
   const [loading, setLoading] = useState(true);
-  const [user, setUser] =
-    useState<NonNullable<React.ContextType<typeof AuthContext>>["user"]>(null);
+  const [user, setUser] = useState<Awaited<ReturnType<typeof loadUser>>>(null);
 
   useEffect(() => {
     init();
@@ -25,6 +27,7 @@ export function AuthProvider({ children }: React.PropsWithChildren) {
         logout: () => {
           clearSession();
           setUser(null);
+          queryClient.clear();
         },
         user,
       }}

@@ -9,12 +9,12 @@ export function useAddTodo() {
     mutationFn: addTodo,
 
     onSuccess(todo) {
-      queryClient.setQueryData(
+      queryClient.setQueryData<ReturnType<typeof useTodos>["data"]>(
         ["todos"],
-        (oldTodos: ReturnType<typeof useTodos>["data"]) => {
-          const newTodos: typeof oldTodos = [...oldTodos, todo];
-
-          return newTodos;
+        (oldTodos) => {
+          if (oldTodos) {
+            return [...oldTodos, todo];
+          }
         },
       );
     },

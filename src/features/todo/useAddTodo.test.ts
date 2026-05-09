@@ -1,5 +1,5 @@
 import { renderHook, waitFor } from "@testing-library/react";
-import { expect, it, vi } from "vitest";
+import { afterEach, expect, it, vi } from "vitest";
 import { addTodo } from "./addTodo";
 import { useAddTodo } from "./useAddTodo";
 import { mockQueryClient } from "@/test/mocks/mockQueryClient";
@@ -7,6 +7,10 @@ import { mockQueryClient } from "@/test/mocks/mockQueryClient";
 vi.mock("./addTodo");
 
 const { queryClient, wrapper } = mockQueryClient();
+
+afterEach(() => {
+  queryClient.clear();
+});
 
 it("adds new todo to cache on success", async () => {
   vi.mocked(addTodo).mockResolvedValueOnce({
@@ -56,5 +60,25 @@ it("adds new todo to cache on success", async () => {
         text: "Fix faucet",
       },
     ]);
+  });
+});
+
+it("does not update cache if undefined", async () => {
+  vi.mocked(addTodo).mockResolvedValueOnce({
+    checked: false,
+    id: "mocktodoid789",
+    text: "Fix faucet",
+  });
+
+  const { result } = renderHook(() => useAddTodo(), {
+    wrapper,
+  });
+
+  result.current.mutate({
+    data: "Fix faucet",
+  });
+
+  await waitFor(() => {
+    expect(queryClient.getQueryData(["todos"])).toBeUndefined();
   });
 });

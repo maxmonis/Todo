@@ -13,10 +13,10 @@ export function useDeleteTodo(todoId: string) {
     },
 
     onSuccess(id) {
-      queryClient.setQueryData(
+      queryClient.setQueryData<ReturnType<typeof useTodos>["data"]>(
         ["todos"],
-        (oldTodos: ReturnType<typeof useTodos>["data"]) => {
-          return oldTodos.filter((t) => t.id !== id);
+        (oldTodos) => {
+          return oldTodos?.filter((t) => t.id !== id);
         },
       );
     },

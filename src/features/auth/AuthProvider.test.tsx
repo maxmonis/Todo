@@ -6,6 +6,20 @@ import { AuthProvider } from "./AuthProvider";
 import { clearSession } from "./clearSession";
 import { loadUser } from "./loadUser";
 
+const mocks = vi.hoisted(() => {
+  return {
+    clear: vi.fn(),
+  };
+});
+
+vi.mock("@tanstack/react-query", () => {
+  return {
+    useQueryClient: vi.fn().mockReturnValue({
+      clear: mocks.clear,
+    }),
+  };
+});
+
 vi.mock("./clearSession");
 
 vi.mock("./loadUser");
@@ -83,5 +97,6 @@ it("clears session when logout clicked", async () => {
   );
 
   expect(clearSession).toHaveBeenCalledOnce();
+  expect(mocks.clear).toHaveBeenCalledOnce();
   screen.getByText("user:null");
 });

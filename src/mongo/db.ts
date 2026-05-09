@@ -33,13 +33,15 @@ const userSchema = new mongoose.Schema<UserDoc>({
   },
 });
 
+const Todo: mongoose.Model<TodoDoc> =
+  mongoose.models.Todo ?? mongoose.model("Todo", todoSchema);
+
+const User: mongoose.Model<UserDoc> =
+  mongoose.models.User ?? mongoose.model("User", userSchema);
+
 export const db = {
-  Todo:
-    (mongoose.models.Todo as undefined | mongoose.Model<TodoDoc>) ??
-    mongoose.model("Todo", todoSchema),
-  User:
-    (mongoose.models.User as undefined | mongoose.Model<UserDoc>) ??
-    mongoose.model("User", userSchema),
+  Todo,
+  User,
 };
 
 connectDB();
