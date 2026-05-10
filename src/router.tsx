@@ -6,20 +6,11 @@ import { routeTree } from "./routeTree.gen";
 
 export function getRouter() {
   const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: false,
-        staleTime: 5 * 60 * 1000,
-      },
-    },
+    defaultOptions: { queries: { retry: false, staleTime: 5 * 60 * 1000 } },
   });
 
   const router = createRouter({
-    context: {
-      ...{
-        queryClient,
-      },
-    },
+    context: { ...{ queryClient } },
     defaultPreload: "intent",
     routeTree,
     Wrap({ children }: React.PropsWithChildren) {
@@ -33,10 +24,7 @@ export function getRouter() {
     },
   });
 
-  setupRouterSsrQueryIntegration({
-    queryClient,
-    router,
-  });
+  setupRouterSsrQueryIntegration({ queryClient, router });
 
   return router;
 }

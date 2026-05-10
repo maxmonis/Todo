@@ -23,28 +23,19 @@ it("renders logout button if signed in", () => {
   vi.mocked(useAuth).mockReturnValueOnce({
     loading: false,
     logout: logoutSpy,
-    user: {
-      email: "mock@email.test",
-      todos: [],
-    },
+    user: { email: "mock@email.test", todos: [] },
   });
 
   render(<AuthButton />);
 
-  fireEvent.click(
-    screen.getByRole("button", {
-      name: "Logout",
-    }),
-  );
+  fireEvent.click(screen.getByRole("button", { name: "Logout" }));
 
   expect(logoutSpy).toHaveBeenCalledOnce();
 });
 
 it("renders Google button if logged out", () => {
   Object.defineProperty(window, "location", {
-    value: {
-      href: "",
-    },
+    value: { href: "" },
     writable: true,
   });
   vi.mocked(useAuth).mockReturnValueOnce({
@@ -55,11 +46,7 @@ it("renders Google button if logged out", () => {
 
   render(<AuthButton />);
 
-  fireEvent.click(
-    screen.getByRole("button", {
-      name: /Continue with Google/,
-    }),
-  );
+  fireEvent.click(screen.getByRole("button", { name: /Continue with Google/ }));
 
   expect(window.location.href).toBe(
     `${import.meta.env.VITE_BASE_URL}/api/auth/google`,

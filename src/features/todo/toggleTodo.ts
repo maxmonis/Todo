@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { authMiddleware } from "../auth/authMiddleware";
 import { db } from "@/prisma/db";
+import { authMiddleware } from "../auth/authMiddleware";
 
 export const toggleTodo = createServerFn({
   method: "POST",
@@ -10,33 +10,17 @@ export const toggleTodo = createServerFn({
   .inputValidator(z.cuid())
   .handler(async ({ context: { userId }, data: id }) => {
     const todo = await db.todo.findUnique({
-      where: {
-        id,
-      },
+      select: { checked: true, userId: true },
+      where: { id },
     });
 
-    if (!todo) {
-      throw Error("Not found");
-    }
+    if (!todo) throw Error("Not found");
 
-    if (todo.userId !== userId) {
-      throw Error("Not authorized");
-    }
+    if (todo.userId !== userId) throw Error("Not authorized");
 
-    const { checked } = await db.todo.update({
-      data: {
-        checked: !todo.checked,
-      },
-      select: {
-        checked: true,
-      },
-      where: {
-        id,
-      },
-    });
+    const checked = !todo.checked;
 
-    return {
-      checked,
-      id,
-    };
+    await db.todo.update({ data: { checked }, where: { id } });
+
+    return { checked, id };
   });

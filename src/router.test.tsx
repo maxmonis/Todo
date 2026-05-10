@@ -3,9 +3,7 @@ import { it, vi } from "vitest";
 import { getRouter } from "./router";
 
 const mocks = vi.hoisted(() => {
-  return {
-    createRouter: vi.fn(),
-  };
+  return { createRouter: vi.fn() };
 });
 
 vi.mock("@tanstack/react-query", async () => {

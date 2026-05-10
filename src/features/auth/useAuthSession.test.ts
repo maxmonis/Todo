@@ -3,15 +3,11 @@ import { expect, it, vi } from "vitest";
 import { useAuthSession } from "./useAuthSession";
 
 vi.mock("@tanstack/react-start/server", () => {
-  return {
-    useSession: vi.fn(),
-  };
+  return { useSession: vi.fn() };
 });
 
 it("returns the result of useSession", () => {
-  const mockSession = {
-    userId: "mockuserid",
-  };
+  const mockSession = { userId: "mockuserid" };
 
   vi.mocked(useSession).mockReturnValueOnce(mockSession as any);
 

@@ -1,8 +1,8 @@
 import { renderHook, waitFor } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
+import { mockQueryClient } from "@/test/mocks/mockQueryClient";
 import { addTodo } from "./addTodo";
 import { useAddTodo } from "./useAddTodo";
-import { mockQueryClient } from "@/test/mocks/mockQueryClient";
 
 vi.mock("./addTodo");
 
@@ -12,71 +12,34 @@ afterEach(() => {
   queryClient.clear();
 });
 
+const mockNewTodo = { checked: false, id: "3", text: "Fix faucet" };
+
 it("adds new todo to cache on success", async () => {
-  vi.mocked(addTodo).mockResolvedValueOnce({
-    checked: false,
-    id: "mocktodoid789",
-    text: "Fix faucet",
-  });
-  queryClient.setQueryData(
-    ["todos"],
-    [
-      {
-        checked: false,
-        id: "mocktodoid123",
-        text: "Wash car",
-      },
-      {
-        checked: true,
-        id: "mocktodoid456",
-        text: "Buy groceries",
-      },
-    ],
-  );
+  const mockTodo1 = { checked: false, id: "1", text: "Wash car" };
+  const mockTodo2 = { checked: true, id: "2", text: "Buy groceries" };
 
-  const { result } = renderHook(() => useAddTodo(), {
-    wrapper,
-  });
+  queryClient.setQueryData(["todos"], [mockTodo1, mockTodo2]);
+  vi.mocked(addTodo).mockResolvedValueOnce(mockNewTodo);
 
-  result.current.mutate({
-    data: "Fix faucet",
-  });
+  const { result } = renderHook(() => useAddTodo(), { wrapper });
+
+  result.current.mutate({ data: mockNewTodo.text });
 
   await waitFor(() => {
     expect(queryClient.getQueryData(["todos"])).toEqual([
-      {
-        checked: false,
-        id: "mocktodoid123",
-        text: "Wash car",
-      },
-      {
-        checked: true,
-        id: "mocktodoid456",
-        text: "Buy groceries",
-      },
-      {
-        checked: false,
-        id: "mocktodoid789",
-        text: "Fix faucet",
-      },
+      mockTodo1,
+      mockTodo2,
+      mockNewTodo,
     ]);
   });
 });
 
 it("does not update cache if undefined", async () => {
-  vi.mocked(addTodo).mockResolvedValueOnce({
-    checked: false,
-    id: "mocktodoid789",
-    text: "Fix faucet",
-  });
+  vi.mocked(addTodo).mockResolvedValueOnce(mockNewTodo);
 
-  const { result } = renderHook(() => useAddTodo(), {
-    wrapper,
-  });
+  const { result } = renderHook(() => useAddTodo(), { wrapper });
 
-  result.current.mutate({
-    data: "Fix faucet",
-  });
+  result.current.mutate({ data: mockNewTodo.text });
 
   await waitFor(() => {
     expect(queryClient.getQueryData(["todos"])).toBeUndefined();

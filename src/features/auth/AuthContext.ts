@@ -4,7 +4,7 @@ import type { loadUser } from "./loadUser";
 interface Context {
   loading: boolean;
   logout: () => void;
-  user: User | null;
+  user: null | User;
 }
 
 type User = Awaited<ReturnType<typeof loadUser>>;

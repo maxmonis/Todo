@@ -8,8 +8,8 @@ interface Props {
 export function LoadingSpinner({ className, hideLoadingText }: Props) {
   return (
     <div
-      aria-live="polite"
       aria-label="Loading"
+      aria-live="polite"
       className={cn("text-fg flex items-center justify-center", className)}
       role="status"
     >

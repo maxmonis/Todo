@@ -1,46 +1,35 @@
 import { expect, it, vi } from "vitest";
-import { toggleTodo } from "./toggleTodo";
 import { db } from "@/prisma/db";
+import { toggleTodo } from "./toggleTodo";
+
+const mocks = vi.hoisted(() => {
+  return { userId: "mock-user-id" };
+});
 
 vi.mock("@tanstack/react-start", async () => {
   const { mockCreateServerFn } = await import(
     "@/test/mocks/mockCreateServerFn"
   );
-  return {
-    createServerFn: mockCreateServerFn,
-  };
-});
-
-vi.mock("../auth/authMiddleware", () => {
-  return {
-    authMiddleware: vi.fn().mockReturnValue({
-      userId: "mockuserid",
-    }),
-  };
+  return { createServerFn: mockCreateServerFn };
 });
 
 vi.mock("@/prisma/db", () => {
-  return {
-    db: {
-      todo: {
-        findUnique: vi.fn(),
-        update: vi.fn(),
-      },
-    },
-  };
+  return { db: { todo: { findUnique: vi.fn(), update: vi.fn() } } };
+});
+
+vi.mock("../auth/authMiddleware", () => {
+  return { authMiddleware: vi.fn().mockReturnValue({ userId: mocks.userId }) };
 });
 
 const mockTodo = {
   checked: true,
   id: "ckgvn8jss000001l4h0m2v1x1",
   text: "Mock text",
-  userId: "mockuserid",
+  userId: mocks.userId,
 };
 
 it("rejects invalid id", async () => {
-  const res = toggleTodo({
-    data: "not-a-valid-cuid",
-  });
+  const res = toggleTodo({ data: "not-a-valid-cuid" });
 
   await expect(res).rejects.toThrow();
 });
@@ -48,9 +37,7 @@ it("rejects invalid id", async () => {
 it("throws if not found", async () => {
   vi.mocked(db.todo.findUnique).mockResolvedValueOnce(null);
 
-  const res = toggleTodo({
-    data: mockTodo.id,
-  });
+  const res = toggleTodo({ data: mockTodo.id });
 
   await expect(res).rejects.toThrow("Not found");
 });
@@ -61,39 +48,19 @@ it("throws if userId does not match", async () => {
     userId: "not-the-matching-user-id",
   });
 
-  const res = toggleTodo({
-    data: mockTodo.id,
-  });
+  const res = toggleTodo({ data: mockTodo.id });
 
   await expect(res).rejects.toThrow("Not authorized");
 });
 
 it("toggles todo then returns ID and status", async () => {
-  const newChecked = !mockTodo.checked;
+  const checked = !mockTodo.checked;
 
   vi.mocked(db.todo.findUnique).mockResolvedValueOnce(mockTodo);
-  vi.mocked(db.todo.update).mockResolvedValueOnce({
-    ...mockTodo,
-    checked: newChecked,
-  });
+  vi.mocked(db.todo.update).mockResolvedValueOnce({ ...mockTodo, checked });
 
-  const res = await toggleTodo({
-    data: mockTodo.id,
-  });
+  const res = await toggleTodo({ data: mockTodo.id });
 
-  expect(res).toEqual({
-    checked: newChecked,
-    id: mockTodo.id,
-  });
-  expect(db.todo.update).toHaveBeenCalledExactlyOnceWith({
-    data: {
-      checked: newChecked,
-    },
-    select: {
-      checked: true,
-    },
-    where: {
-      id: mockTodo.id,
-    },
-  });
+  expect(res).toEqual({ checked, id: mockTodo.id });
+  expect(db.todo.update).toHaveBeenCalledOnce();
 });

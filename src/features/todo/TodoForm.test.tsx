@@ -4,17 +4,11 @@ import { beforeEach, expect, it, vi } from "vitest";
 import { TodoForm } from "./TodoForm";
 
 const mocks = vi.hoisted(() => {
-  return {
-    addTodo: vi.fn(),
-  };
+  return { addTodo: vi.fn() };
 });
 
 vi.mock("./useAddTodo", () => {
-  return {
-    useAddTodo: vi.fn().mockReturnValue({
-      mutate: mocks.addTodo,
-    }),
-  };
+  return { useAddTodo: vi.fn().mockReturnValue({ mutate: mocks.addTodo }) };
 });
 
 beforeEach(() => {
@@ -22,11 +16,7 @@ beforeEach(() => {
 });
 
 it("prevents empty submission", () => {
-  expect(
-    screen.getByRole("button", {
-      name: "Add Todo",
-    }),
-  ).toBeDisabled();
+  expect(screen.getByRole("button", { name: "Add Todo" })).toBeDisabled();
 });
 
 it("prevents whitespace submission", async () => {
@@ -35,11 +25,7 @@ it("prevents whitespace submission", async () => {
     "   ",
   );
 
-  expect(
-    screen.getByRole("button", {
-      name: "Add Todo",
-    }),
-  ).toBeDisabled();
+  expect(screen.getByRole("button", { name: "Add Todo" })).toBeDisabled();
 });
 
 it("allows adding a new todo", async () => {
@@ -49,13 +35,7 @@ it("allows adding a new todo", async () => {
     screen.getByPlaceholderText("Enter a new todo..."),
     mockTodoText,
   );
-  fireEvent.click(
-    screen.getByRole("button", {
-      name: "Add Todo",
-    }),
-  );
+  fireEvent.click(screen.getByRole("button", { name: "Add Todo" }));
 
-  expect(mocks.addTodo).toHaveBeenCalledExactlyOnceWith({
-    data: mockTodoText,
-  });
+  expect(mocks.addTodo).toHaveBeenCalledExactlyOnceWith({ data: mockTodoText });
 });

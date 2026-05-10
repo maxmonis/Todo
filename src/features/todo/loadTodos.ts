@@ -1,19 +1,13 @@
 import { createServerFn } from "@tanstack/react-start";
-import { authMiddleware } from "../auth/authMiddleware";
 import { db } from "@/prisma/db";
+import { authMiddleware } from "../auth/authMiddleware";
 
 export const loadTodos = createServerFn()
   .middleware([authMiddleware])
-  .handler(async ({ context: { userId } }) => {
-    return await db.todo.findMany({
-      omit: {
-        userId: true,
-      },
-      orderBy: {
-        id: "asc",
-      },
-      where: {
-        userId,
-      },
-    });
-  });
+  .handler(({ context: { userId } }) =>
+    db.todo.findMany({
+      omit: { userId: true },
+      orderBy: { id: "asc" },
+      where: { userId },
+    }),
+  );

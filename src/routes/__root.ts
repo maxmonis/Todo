@@ -1,5 +1,5 @@
-import { createRootRouteWithContext } from "@tanstack/react-router";
 import type { QueryClient } from "@tanstack/react-query";
+import { createRootRouteWithContext } from "@tanstack/react-router";
 import { ErrorComponent } from "@/components/root/ErrorComponent";
 import { NotFoundComponent } from "@/components/root/NotFoundComponent";
 import { ShellComponent } from "@/components/root/ShellComponent";
@@ -11,23 +11,11 @@ export const Route = createRootRouteWithContext<{
   errorComponent: ErrorComponent,
   head() {
     return {
-      links: [
-        {
-          href: stylesheet,
-          rel: "stylesheet",
-        },
-      ],
+      links: [{ href: stylesheet, rel: "stylesheet" }],
       meta: [
-        {
-          charSet: "utf-8",
-        },
-        {
-          content: "initial-scale=1, width=device-width",
-          name: "viewport",
-        },
-        {
-          title: "Todo",
-        },
+        { charSet: "utf-8" },
+        { content: "initial-scale=1, width=device-width", name: "viewport" },
+        { title: "Todo" },
       ],
     };
   },

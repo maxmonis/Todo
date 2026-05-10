@@ -28,11 +28,7 @@ describe("ErrorComponent", () => {
 
     render(<ErrorComponent error={null} reset={resetSpy} />);
 
-    fireEvent.click(
-      screen.getByRole("button", {
-        name: "Try Again",
-      }),
-    );
+    fireEvent.click(screen.getByRole("button", { name: "Try Again" }));
 
     expect(resetSpy).toHaveBeenCalledOnce();
   });

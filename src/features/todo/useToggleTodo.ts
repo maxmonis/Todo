@@ -6,25 +6,14 @@ export function useToggleTodo(todoId: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn() {
-      return toggleTodo({
-        data: todoId,
-      });
-    },
-
+    mutationFn: () => toggleTodo({ data: todoId }),
     onSuccess({ checked, id }) {
       queryClient.setQueryData<ReturnType<typeof useTodos>["data"]>(
         ["todos"],
-        (oldTodos) => {
-          return oldTodos?.map((todo) =>
-            todo.id === id
-              ? {
-                  ...todo,
-                  checked,
-                }
-              : todo,
-          );
-        },
+        (oldTodos) =>
+          oldTodos?.map((todo) =>
+            todo.id === id ? { ...todo, checked } : todo,
+          ),
       );
     },
   });

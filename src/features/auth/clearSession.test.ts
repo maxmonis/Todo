@@ -6,9 +6,7 @@ vi.mock("@tanstack/react-start", async () => {
   const { mockCreateServerFn } = await import(
     "@/test/mocks/mockCreateServerFn"
   );
-  return {
-    createServerFn: mockCreateServerFn,
-  };
+  return { createServerFn: mockCreateServerFn };
 });
 
 vi.mock("./useAuthSession");

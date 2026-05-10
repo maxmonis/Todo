@@ -3,11 +3,9 @@ import { useAuth } from "./useAuth";
 export function AuthButton() {
   const { loading, logout, user } = useAuth();
 
-  if (loading) {
-    return null;
-  }
+  if (loading) return null;
 
-  if (user) {
+  if (user)
     return (
       <div>
         <p className="text-sm">Logged in as {user.email}</p>
@@ -21,7 +19,6 @@ export function AuthButton() {
         </button>
       </div>
     );
-  }
 
   return (
     <button

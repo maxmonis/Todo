@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
-import { useDeleteTodo } from "./useDeleteTodo";
-import { useToggleTodo } from "./useToggleTodo";
-import type { useTodos } from "./useTodos";
-import { cn } from "@/lib/utils";
 import { Checkbox } from "@/components/ui/Checkbox";
+import { cn } from "@/lib/utils";
+import { useDeleteTodo } from "./useDeleteTodo";
+import type { useTodos } from "./useTodos";
+import { useToggleTodo } from "./useToggleTodo";
 
 interface Props {
   todo: ReturnType<typeof useTodos>["data"][number];
@@ -17,24 +17,12 @@ export function TodoListItem({ todo: { checked, id, text } }: Props) {
 
   return (
     <motion.li
-      animate={{
-        opacity: 1,
-        y: 0,
-      }}
+      animate={{ opacity: 1, y: 0 }}
       className="flex justify-between gap-5 rounded-lg border border-white/20 bg-white/10 px-5 py-3 shadow-md backdrop-blur-sm"
-      exit={{
-        opacity: 0,
-        y: 20,
-      }}
-      initial={{
-        opacity: 0,
-        y: -20,
-      }}
+      exit={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: -20 }}
       layout
-      transition={{
-        duration: 0.2,
-        ease: "easeOut",
-      }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
     >
       <Checkbox
         checked={checked}

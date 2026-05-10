@@ -7,14 +7,11 @@ export function useAddTodo() {
 
   return useMutation({
     mutationFn: addTodo,
-
     onSuccess(todo) {
       queryClient.setQueryData<ReturnType<typeof useTodos>["data"]>(
         ["todos"],
         (oldTodos) => {
-          if (oldTodos) {
-            return [...oldTodos, todo];
-          }
+          if (oldTodos) return [...oldTodos, todo];
         },
       );
     },

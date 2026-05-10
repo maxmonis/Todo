@@ -1,41 +1,27 @@
 import { expect, it, vi } from "vitest";
-import { addTodo } from "./addTodo";
 import { db } from "@/prisma/db";
+import { addTodo } from "./addTodo";
 
 vi.mock("@tanstack/react-start", async () => {
   const { mockCreateServerFn } = await import(
     "@/test/mocks/mockCreateServerFn"
   );
-  return {
-    createServerFn: mockCreateServerFn,
-  };
+  return { createServerFn: mockCreateServerFn };
+});
+
+vi.mock("@/prisma/db", () => {
+  return { db: { todo: { create: vi.fn() } } };
 });
 
 vi.mock("../auth/authMiddleware", () => {
   return {
-    authMiddleware: vi.fn().mockReturnValue({
-      context: {
-        userId: "mockuserid",
-      },
-    }),
+    authMiddleware: vi
+      .fn()
+      .mockReturnValue({ context: { userId: "mockuserid" } }),
   };
 });
 
-vi.mock("@/prisma/db", () => {
-  return {
-    db: {
-      todo: {
-        create: vi.fn(),
-      },
-    },
-  };
-});
-
-const mockTodo = {
-  checked: false,
-  id: "mocktodoid",
-  text: "Fix faucet",
-};
+const mockTodo = { checked: false, id: "mocktodoid", text: "Fix faucet" };
 
 it("saves the new todo and returns it", async () => {
   vi.mocked(db.todo.create).mockImplementationOnce(({ data }: any) => {
@@ -46,9 +32,7 @@ it("saves the new todo and returns it", async () => {
     }) as any;
   });
 
-  const res = await addTodo({
-    data: mockTodo.text,
-  });
+  const res = await addTodo({ data: mockTodo.text });
 
   expect(res).toEqual(mockTodo);
 });

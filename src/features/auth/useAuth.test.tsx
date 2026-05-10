@@ -7,10 +7,7 @@ it("returns context", () => {
   const mockContext = {
     loading: false,
     logout: vi.fn(),
-    user: {
-      email: "mock@email.test",
-      todos: [],
-    },
+    user: { email: "mock@email.test", todos: [] },
   };
 
   const { result } = renderHook(() => useAuth(), {

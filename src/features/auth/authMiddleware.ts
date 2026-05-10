@@ -5,16 +5,10 @@ export const authMiddleware = createMiddleware({
   type: "function",
 }).server(async ({ next }) => {
   const {
-    data: { id },
+    data: { id: userId },
   } = await useAuthSession();
 
-  if (!id) {
-    throw Error("Not authorized");
-  }
+  if (!userId) throw Error("Not authorized");
 
-  return next({
-    context: {
-      userId: id,
-    },
-  });
+  return next({ context: { userId } });
 });

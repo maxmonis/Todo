@@ -2,9 +2,5 @@ import { createFileRoute } from "@tanstack/react-router";
 import { googleAuth } from "@/features/auth/googleAuth";
 
 export const Route = createFileRoute("/api/auth/google/")({
-  server: {
-    handlers: {
-      GET: googleAuth,
-    },
-  },
+  server: { handlers: { GET: googleAuth } },
 });

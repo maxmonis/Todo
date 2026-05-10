@@ -14,18 +14,12 @@ export const mockCreateServerFn = vi.fn(() => {
   return {
     handler(cb: (ctx: Ctx) => unknown) {
       return async ({ context, data }: Ctx = {}) => {
-        if (validator) {
-          data = await validator.parseAsync(data);
-        }
+        if (validator) data = await validator.parseAsync(data);
 
-        for (const middleware of middlewares) {
+        for (const middleware of middlewares)
           context = await middleware(context);
-        }
 
-        return cb({
-          context,
-          data,
-        });
+        return cb({ context, data });
       };
     },
 

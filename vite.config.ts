@@ -9,12 +9,7 @@ export default defineConfig({
     tailwindcss(),
     tanstackStart(),
     viteReact(),
-    viteTsConfigPaths({
-      projects: ["./tsconfig.json"],
-    }),
+    viteTsConfigPaths({ projects: ["./tsconfig.json"] }),
   ],
-  server: {
-    open: true,
-    port: 3000,
-  },
+  server: { open: true, port: 3000 },
 });

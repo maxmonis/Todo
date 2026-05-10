@@ -11,9 +11,7 @@ export function TodoForm() {
       className="flex flex-col gap-3"
       onSubmit={(e) => {
         e.preventDefault();
-        addTodo({
-          data: text,
-        });
+        addTodo({ data: text.trim() });
         setText("");
       }}
     >
@@ -27,7 +25,7 @@ export function TodoForm() {
       />
       <button
         className="rounded-lg bg-blue-500 px-5 py-3 font-bold transition-colors hover:bg-blue-600 disabled:bg-blue-500/50"
-        disabled={text.trim().length === 0}
+        disabled={!text.trim().length}
         type="submit"
       >
         Add Todo
