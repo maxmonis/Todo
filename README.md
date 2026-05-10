@@ -1,7 +1,7 @@
 ## Todo
 
 I wanted to try out TanStack Start (which is still in beta) so I made this
-simple todo app with Google authentication and a MongoDB database.
+simple todo app with Google authentication and a SQLite database.
 
 https://github.com/user-attachments/assets/2a55fe41-7ef6-4c91-968e-36cbcb26c68d
 
@@ -15,9 +15,9 @@ yet, but it does work locally and has comprehensive unit tests:
 You'll need the following env vars:
 
 - `VITE_BASE_URL`: http://localhost:3000 in development
+- `DATABASE_URL`: `file:./dev.db` for local SQLite
 - `GOOGLE_CLIENT_ID`: your Google API client ID
 - `GOOGLE_CLIENT_SECRET`: your Google API client secret
-- `MONGO_URI`: your MongoDB connection string
 - `SESSION_SECRET`: a secret key of your choosing (min 30 chars)
 
 ### Scripts

@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { AuthButton } from "../auth/AuthButton";
 import { useAuth } from "../auth/useAuth";
 import { TodoList } from "./TodoList";
@@ -5,7 +6,13 @@ import { TodoForm } from "./TodoForm";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 export function TodoApp() {
+  const queryClient = useQueryClient();
+
   const { loading, user } = useAuth();
+
+  if (user) {
+    queryClient.setQueryData(["todos"], user.todos);
+  }
 
   return (
     <div className="flex min-h-screen items-center justify-center overflow-auto py-20">

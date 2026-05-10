@@ -1,6 +1,6 @@
 import { expect, it, vi } from "vitest";
 import { loadTodos } from "./loadTodos";
-import { db } from "@/mongo/db";
+import { db } from "@/prisma/db";
 
 vi.mock("@tanstack/react-start", async () => {
   const { mockCreateServerFn } = await import(
@@ -21,39 +21,33 @@ vi.mock("../auth/authMiddleware", () => {
   };
 });
 
-vi.mock("@/mongo/db");
+vi.mock("@/prisma/db", () => {
+  return {
+    db: {
+      todo: {
+        findMany: vi.fn(),
+      },
+    },
+  };
+});
+
+const mockTodos = [
+  {
+    checked: false,
+    id: "mocktodoid123",
+    text: "Wash car",
+  },
+  {
+    checked: true,
+    id: "mocktodoid456",
+    text: "Buy groceries",
+  },
+];
 
 it("returns todos from DB", async () => {
-  vi.mocked(db.Todo.find).mockReturnValueOnce({
-    lean: vi.fn().mockResolvedValueOnce([
-      {
-        _id: {
-          toString: () => "mocktodoid123",
-        },
-        text: "Wash car",
-      },
-      {
-        _id: {
-          toString: () => "mocktodoid456",
-        },
-        checked: true,
-        text: "Buy groceries",
-      },
-    ]),
-  } as any);
+  vi.mocked(db.todo.findMany).mockResolvedValueOnce(mockTodos as any);
 
   const res = await loadTodos();
 
-  expect(res).toEqual([
-    {
-      checked: false,
-      id: "mocktodoid123",
-      text: "Wash car",
-    },
-    {
-      checked: true,
-      id: "mocktodoid456",
-      text: "Buy groceries",
-    },
-  ]);
+  expect(res).toEqual(mockTodos);
 });

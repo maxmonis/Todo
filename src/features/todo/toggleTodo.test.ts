@@ -1,7 +1,6 @@
-import mongoose from "mongoose";
 import { expect, it, vi } from "vitest";
 import { toggleTodo } from "./toggleTodo";
-import { db } from "@/mongo/db";
+import { db } from "@/prisma/db";
 
 vi.mock("@tanstack/react-start", async () => {
   const { mockCreateServerFn } = await import(
@@ -20,60 +19,81 @@ vi.mock("../auth/authMiddleware", () => {
   };
 });
 
-vi.mock("@/mongo/db");
+vi.mock("@/prisma/db", () => {
+  return {
+    db: {
+      todo: {
+        findUnique: vi.fn(),
+        update: vi.fn(),
+      },
+    },
+  };
+});
 
-const mockTodoId = new mongoose.Types.ObjectId().toString();
+const mockTodo = {
+  checked: true,
+  id: "ckgvn8jss000001l4h0m2v1x1",
+  text: "Mock text",
+  userId: "mockuserid",
+};
 
-it("rejects invalid objectId", async () => {
+it("rejects invalid id", async () => {
   const res = toggleTodo({
-    data: "not-a-valid-object-id",
+    data: "not-a-valid-cuid",
   });
 
   await expect(res).rejects.toThrow();
 });
 
 it("throws if not found", async () => {
-  vi.mocked(db.Todo.findById).mockResolvedValueOnce(null);
+  vi.mocked(db.todo.findUnique).mockResolvedValueOnce(null);
 
   const res = toggleTodo({
-    data: mockTodoId,
+    data: mockTodo.id,
   });
 
   await expect(res).rejects.toThrow("Not found");
 });
 
 it("throws if userId does not match", async () => {
-  vi.mocked(db.Todo.findById).mockResolvedValueOnce({
-    userId: {
-      toString: () => "not-the-matching-user-id",
-    },
+  vi.mocked(db.todo.findUnique).mockResolvedValueOnce({
+    ...mockTodo,
+    userId: "not-the-matching-user-id",
   });
 
   const res = toggleTodo({
-    data: mockTodoId,
+    data: mockTodo.id,
   });
 
   await expect(res).rejects.toThrow("Not authorized");
 });
 
 it("toggles todo then returns ID and status", async () => {
-  const saveSpy = vi.fn();
+  const newChecked = !mockTodo.checked;
 
-  vi.mocked(db.Todo.findById).mockResolvedValueOnce({
-    checked: true,
-    save: saveSpy,
-    userId: {
-      toString: () => "mockuserid",
-    },
+  vi.mocked(db.todo.findUnique).mockResolvedValueOnce(mockTodo);
+  vi.mocked(db.todo.update).mockResolvedValueOnce({
+    ...mockTodo,
+    checked: newChecked,
   });
 
   const res = await toggleTodo({
-    data: mockTodoId,
+    data: mockTodo.id,
   });
 
   expect(res).toEqual({
-    checked: false,
-    id: mockTodoId,
+    checked: newChecked,
+    id: mockTodo.id,
   });
-  expect(saveSpy).toHaveBeenCalledOnce();
+  expect(db.todo.update).toHaveBeenCalledExactlyOnceWith({
+    data: {
+      checked: newChecked,
+    },
+    select: {
+      checked: true,
+    },
+    where: {
+      id: mockTodo.id,
+    },
+  });
 });

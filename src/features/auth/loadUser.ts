@@ -1,34 +1,43 @@
 import { createServerFn } from "@tanstack/react-start";
-import { isValidObjectId } from "mongoose";
 import { useAuthSession } from "./useAuthSession";
-import { db } from "@/mongo/db";
+import { db } from "@/prisma/db";
 
 export const loadUser = createServerFn().handler(async () => {
   const session = await useAuthSession();
 
-  const { userId } = session.data;
-  if (!userId) {
+  const { id } = session.data;
+
+  if (!id) {
     return null;
   }
 
-  if (!isValidObjectId(userId)) {
-    await session.clear();
-    return null;
-  }
-
-  const doc = await db.User.findById(userId);
-  if (!doc) {
-    await session.clear();
-    return null;
-  }
-
-  const { email } = doc;
-  await session.update({
-    email,
-    userId,
+  const user = await db.user.findUnique({
+    select: {
+      email: true,
+      todos: {
+        orderBy: {
+          id: "asc",
+        },
+        select: {
+          checked: true,
+          id: true,
+          text: true,
+        },
+      },
+    },
+    where: {
+      id,
+    },
   });
 
-  return {
-    email,
-  };
+  if (!user) {
+    await session.clear();
+    return null;
+  }
+
+  await session.update({
+    id,
+  });
+
+  return user;
 });

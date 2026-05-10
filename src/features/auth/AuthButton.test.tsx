@@ -25,6 +25,7 @@ it("renders logout button if signed in", () => {
     logout: logoutSpy,
     user: {
       email: "mock@email.test",
+      todos: [],
     },
   });
 

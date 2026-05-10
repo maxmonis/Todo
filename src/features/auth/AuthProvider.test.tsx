@@ -59,6 +59,7 @@ it("updates loading when signed out", async () => {
 it("updates user and loading when logged in", async () => {
   vi.mocked(loadUser).mockResolvedValueOnce({
     email: "mock@email.test",
+    todos: [],
   });
 
   render(
@@ -78,6 +79,7 @@ it("updates user and loading when logged in", async () => {
 it("clears session when logout clicked", async () => {
   vi.mocked(loadUser).mockResolvedValueOnce({
     email: "mock@email.test",
+    todos: [],
   });
 
   render(

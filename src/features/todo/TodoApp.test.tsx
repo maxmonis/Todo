@@ -1,7 +1,21 @@
 import { render, screen } from "@testing-library/react";
-import { it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 import { useAuth } from "../auth/useAuth";
 import { TodoApp } from "./TodoApp";
+
+const mocks = vi.hoisted(() => {
+  return {
+    setQueryData: vi.fn(),
+  };
+});
+
+vi.mock("@tanstack/react-query", () => {
+  return {
+    useQueryClient: vi.fn().mockReturnValue({
+      setQueryData: mocks.setQueryData,
+    }),
+  };
+});
 
 vi.mock("../auth/AuthButton", () => {
   return {
@@ -49,11 +63,20 @@ it("renders auth button if logged out", () => {
 });
 
 it("renders list and form if signed in", () => {
-  vi.mocked(useAuth).mockReturnValueOnce({
+  const mockTodos = [
+    {
+      checked: false,
+      id: "mockid",
+      text: "Mock text",
+    },
+  ];
+
+  vi.mocked(useAuth).mockReturnValue({
     loading: false,
     logout: vi.fn(),
     user: {
       email: "mock@email.test",
+      todos: mockTodos,
     },
   });
 
@@ -61,4 +84,8 @@ it("renders list and form if signed in", () => {
 
   screen.findByText("MockTodoList");
   screen.findByText("MockTodoForm");
+  expect(mocks.setQueryData).toHaveBeenCalledExactlyOnceWith(
+    ["todos"],
+    mockTodos,
+  );
 });

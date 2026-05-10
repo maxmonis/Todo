@@ -1,6 +1,6 @@
 import { expect, it, vi } from "vitest";
 import { addTodo } from "./addTodo";
-import { db } from "@/mongo/db";
+import { db } from "@/prisma/db";
 
 vi.mock("@tanstack/react-start", async () => {
   const { mockCreateServerFn } = await import(
@@ -21,25 +21,34 @@ vi.mock("../auth/authMiddleware", () => {
   };
 });
 
-vi.mock("@/mongo/db");
+vi.mock("@/prisma/db", () => {
+  return {
+    db: {
+      todo: {
+        create: vi.fn(),
+      },
+    },
+  };
+});
+
+const mockTodo = {
+  checked: false,
+  id: "mocktodoid",
+  text: "Fix faucet",
+};
 
 it("saves the new todo and returns it", async () => {
-  vi.mocked(db.Todo.create).mockImplementationOnce((args: any) => {
+  vi.mocked(db.todo.create).mockImplementationOnce(({ data }: any) => {
     return Promise.resolve({
-      ...args,
-      _id: {
-        toString: () => "mocktodoid",
-      },
-    });
+      checked: mockTodo.checked,
+      id: mockTodo.id,
+      text: data.text,
+    }) as any;
   });
 
   const res = await addTodo({
-    data: "Fix faucet",
+    data: mockTodo.text,
   });
 
-  expect(res).toEqual({
-    checked: false,
-    id: "mocktodoid",
-    text: "Fix faucet",
-  });
+  expect(res).toEqual(mockTodo);
 });

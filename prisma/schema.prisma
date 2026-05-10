@@ -1,0 +1,21 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Todo {
+  checked Boolean @default(false)
+  id      String  @id @default(cuid())
+  text    String
+  user    User    @relation(fields: [userId], onDelete: Cascade, references: [id])
+  userId  String
+}
+
+model User {
+  email String @unique
+  id    String @id @default(cuid())
+  todos Todo[]
+}

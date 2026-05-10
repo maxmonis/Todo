@@ -1,21 +1,19 @@
 import { createServerFn } from "@tanstack/react-start";
 import { authMiddleware } from "../auth/authMiddleware";
-import { db } from "@/mongo/db";
+import { db } from "@/prisma/db";
 
 export const loadTodos = createServerFn()
   .middleware([authMiddleware])
   .handler(async ({ context: { userId } }) => {
-    const docs = await db.Todo.find({
-      userId,
-    }).lean();
-
-    const todos = docs.map(({ _id, checked = false, text }) => {
-      return {
-        checked,
-        id: _id.toString(),
-        text,
-      };
+    return await db.todo.findMany({
+      omit: {
+        userId: true,
+      },
+      orderBy: {
+        id: "asc",
+      },
+      where: {
+        userId,
+      },
     });
-
-    return todos;
   });

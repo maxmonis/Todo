@@ -43,9 +43,11 @@ it("prevents whitespace submission", async () => {
 });
 
 it("allows adding a new todo", async () => {
+  const mockTodoText = "Mock new todo text";
+
   await userEvent.type(
     screen.getByPlaceholderText("Enter a new todo..."),
-    "Mock new todo text",
+    mockTodoText,
   );
   fireEvent.click(
     screen.getByRole("button", {
@@ -54,6 +56,6 @@ it("allows adding a new todo", async () => {
   );
 
   expect(mocks.addTodo).toHaveBeenCalledExactlyOnceWith({
-    data: "Mock new todo text",
+    data: mockTodoText,
   });
 });

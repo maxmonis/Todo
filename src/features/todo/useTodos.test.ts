@@ -30,6 +30,7 @@ it("loads todos from DB", async () => {
     logout: vi.fn(),
     user: {
       email: "mock@email.test",
+      todos: [],
     },
   });
   vi.mocked(loadTodos).mockResolvedValueOnce(mockTodos);

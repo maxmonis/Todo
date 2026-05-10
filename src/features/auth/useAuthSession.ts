@@ -1,8 +1,7 @@
 import { useSession } from "@tanstack/react-start/server";
 
 interface AuthSession {
-  email: string;
-  userId: string;
+  id: string;
 }
 
 export function useAuthSession() {

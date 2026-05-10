@@ -9,6 +9,7 @@ it("returns context", () => {
     logout: vi.fn(),
     user: {
       email: "mock@email.test",
+      todos: [],
     },
   };
 

@@ -1,4 +1,5 @@
 import { createContext } from "react";
+import type { loadUser } from "./loadUser";
 
 interface Context {
   loading: boolean;
@@ -6,8 +7,6 @@ interface Context {
   user: User | null;
 }
 
-interface User {
-  email: string;
-}
+type User = Awaited<ReturnType<typeof loadUser>>;
 
 export const AuthContext = createContext<Context | null>(null);

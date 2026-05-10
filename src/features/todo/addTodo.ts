@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { authMiddleware } from "../auth/authMiddleware";
-import { db } from "@/mongo/db";
+import { db } from "@/prisma/db";
 
 export const addTodo = createServerFn({
   method: "POST",
@@ -9,14 +9,13 @@ export const addTodo = createServerFn({
   .middleware([authMiddleware])
   .inputValidator(z.string().min(1))
   .handler(async ({ context: { userId }, data: text }) => {
-    const doc = await db.Todo.create({
-      text,
-      userId,
+    return await db.todo.create({
+      data: {
+        text,
+        userId,
+      },
+      omit: {
+        userId: true,
+      },
     });
-
-    return {
-      checked: false,
-      id: doc._id.toString(),
-      text: doc.text,
-    };
   });

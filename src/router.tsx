@@ -5,7 +5,14 @@ import { AuthProvider } from "./features/auth/AuthProvider";
 import { routeTree } from "./routeTree.gen";
 
 export function getRouter() {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        staleTime: 5 * 60 * 1000,
+      },
+    },
+  });
 
   const router = createRouter({
     context: {

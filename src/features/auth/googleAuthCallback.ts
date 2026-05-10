@@ -1,6 +1,6 @@
 import { redirect } from "@tanstack/react-router";
 import { useAuthSession } from "./useAuthSession";
-import { db } from "@/mongo/db";
+import { db } from "@/prisma/db";
 
 export async function googleAuthCallback({ request }: { request: Request }) {
   const code = new URL(request.url).searchParams.get("code");
@@ -42,26 +42,30 @@ export async function googleAuthCallback({ request }: { request: Request }) {
 
   const session = await useAuthSession();
 
-  const doc = await db.User.findOne({
-    email,
+  const user = await db.user.findUnique({
+    select: {
+      id: true,
+    },
+    where: {
+      email,
+    },
   });
 
-  if (doc) {
+  if (user) {
     // there's an existing user with this email
-    await session.update({
-      email: doc.email,
-      userId: doc._id.toString(),
-    });
+    await session.update(user);
   } else {
     // there's no existing user so create a new one
-    const newDoc = await db.User.create({
-      email,
+    const newUser = await db.user.create({
+      data: {
+        email,
+      },
+      select: {
+        id: true,
+      },
     });
 
-    await session.update({
-      email: newDoc.email,
-      userId: newDoc._id.toString(),
-    });
+    await session.update(newUser);
   }
 
   return redirect({
