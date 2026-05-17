@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { googleAuthCallback } from "@/features/auth/googleAuthCallback";
+import { googleAuthCallback } from "@/features/auth/server/googleAuthCallback";
 
 export const Route = createFileRoute("/api/auth/google/callback")({
   server: { handlers: { GET: googleAuthCallback } },

@@ -50,8 +50,10 @@
   "name": "todo",
   "private": true,
   "scripts": {
+    "build": "vite build",
     "dev": "vite dev",
     "lint": "eslint . --fix",
+    "prod": "vite build && node ./scripts/preview.mjs",
     "test": "vitest",
     "test:coverage": "vitest run --coverage"
   },

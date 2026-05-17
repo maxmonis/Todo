@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRouter } from "@tanstack/react-router";
 import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query";
-import { AuthProvider } from "./features/auth/AuthProvider";
+import { AuthProvider } from "./features/auth/context/AuthProvider";
 import { routeTree } from "./routeTree.gen";
 
 export function getRouter() {
@@ -15,11 +15,9 @@ export function getRouter() {
     routeTree,
     Wrap({ children }: React.PropsWithChildren) {
       return (
-        <AuthProvider>
-          <QueryClientProvider client={queryClient}>
-            {children}
-          </QueryClientProvider>
-        </AuthProvider>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>{children}</AuthProvider>
+        </QueryClientProvider>
       );
     },
   });

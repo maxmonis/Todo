@@ -1,4 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { TodoApp } from "@/features/todo/TodoApp";
+import { TodoPage } from "@/features/todo/components/TodoPage";
 
-export const Route = createFileRoute("/")({ component: TodoApp });
+export const Route = createFileRoute("/")({ component: TodoPage });

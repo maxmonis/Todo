@@ -7,13 +7,13 @@ export function ShellComponent({ children }: React.PropsWithChildren) {
         <HeadContent />
       </head>
       <body
-        className="min-h-screen bg-linear-to-br from-purple-950 via-purple-900 to-black p-5 text-white"
+        className="h-screen w-screen overflow-hidden bg-linear-to-br from-purple-950 via-purple-900 to-black text-white"
         style={{
           backgroundImage:
             "radial-gradient(50% 50% at 80% 20%, #3B021F 0%, #7B1028 60%, #1A000A 100%)",
         }}
       >
-        {children}
+        <div className="h-screen w-screen overflow-auto">{children}</div>
         <Scripts />
       </body>
     </html>
